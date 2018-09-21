@@ -1,0 +1,47 @@
+// 覆盖element-Ui 初始的上传样式 是指呈现为类似[+]的形式
+
+$photoWidth: 1125px;
+$photoHeight: 450px;
+@mixin uploadPhoto($W: $photoWidth, $H: $photoHeight, $Scale: 0.2, $LH:false) {
+  @if $LH{
+    line-height: $LH * $Scale;
+  }
+  width: $W * $Scale;
+  height: $H * $Scale;
+}
+.top-btn {
+  margin-bottom: 20px;
+  & .total-label {
+    font-weight: 400;
+    color: #c0c4cc;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  & .show-Total {
+    width: 40px;
+    margin-bottom: 10px;
+  }
+}
+
+
+.photo-uploader /deep/ .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.photo-uploader /deep/ .el-upload:hover {
+    border-color: #409eff;
+}
+.photo-uploader-icon {
+    font-size: 20px;
+    color: #8c939d;
+    @include uploadPhoto($photoWidth, $photoHeight, 0.2, $photoHeight);
+    text-align: center;
+}
+.photo {
+    display: block;
+    margin: 0 auto;
+    @include uploadPhoto();
+}

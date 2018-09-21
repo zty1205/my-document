@@ -1,0 +1,10 @@
+
+// 表格内部文本滚动
+  @mixin scrollTableCell($paddingLeft: 8px, $line: 3, $align: center) {
+    overflow-y: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+    text-align: $align;
+    padding-right: $paddingLeft;
+  }
