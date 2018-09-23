@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+$BASIC_UNIT_PX: 1px;
+$BASIC_UNIT_NUMBER: 1;
+// 表格内部文本滚动
+  @mixin scrollTableCell($paddingLeft: 8px, $line: 3, $align: center) {
+    overflow-y: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+    text-align: $align;
+    padding-right: $paddingLeft;
+  }
+
+  .block {
+    display: block;
+  }
+
+
+  $MIN_FONT_SIZE: 12;
+  $MAX_FONT_SIZE: 28;
+  @for $font_size from $MIN_FONT_SIZE through $MAX_FONT_SIZE {
+    .fs-#{$font_size} {
+      font-size: $font_size * $BASIC_UNIT_PX;
+    }
+  }
+
+  $NORMAL_WIDTH: 180 200 240 280 300 320 360 400;
+  @each $width in $NORMAL_WIDTH {
+    .width-#{$width} {
+      width: $width * $BASIC_UNIT_PX;
+    } 
+  }
+
+  $NORMAL_MARGIN: 20;
+  @while $NORMAL_MARGIN > 0 {
+    .marginTop-#{$NORMAL_MARGIN} {
+      margin-top: $NORMAL_MARGIN * $BASIC_UNIT_PX;
+    }
+    .marginLeft-#{$NORMAL_MARGIN} {
+      margin-left: $NORMAL_MARGIN * $BASIC_UNIT_PX;
+    }
+    .marginRight-#{$NORMAL_MARGIN} {
+      margin-right: $NORMAL_MARGIN * $BASIC_UNIT_PX;
+    }
+    .marginBottom-#{$NORMAL_MARGIN} {
+      margin-bottom: $NORMAL_MARGIN * $BASIC_UNIT_PX;
+    }
+    $NORMAL_MARGIN: $NORMAL_MARGIN - $BASIC_UNIT_NUMBER
+  }

@@ -1,4 +1,4 @@
-
+@charset "utf-8";
 // 表格内部文本滚动
   @mixin scrollTableCell($paddingLeft: 8px, $line: 3, $align: center) {
     overflow-y: auto;
@@ -7,4 +7,17 @@
     -webkit-box-orient: vertical;
     text-align: $align;
     padding-right: $paddingLeft;
+  }
+
+  .block {
+    display: block;
+  }
+
+
+  $MIN_FONT_SIZE: 12;
+  $MAX_FONT_SIZE: 28;
+  @for $font_size from $MIN_FONT_SIZE through $MAX_FONT_SIZE {
+    .fs-#{$font_size} {
+      font-size: $font_size * 1px;
+    }
   }

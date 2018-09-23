@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML5 - FileReader</title>
+    <style>
+        .container {
+            padding: 10px;
+            display: block;
+            margin: 10px auto;
+        }
+        .file-container {
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            -webkit-appearance: none;
+            box-sizing: border-box;
+            outline: none;
+            margin: 0;
+            transition: .1s;
+            font-weight: 500;
+            padding: 2px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            color: #fff;
+            background-color: #409eff;
+            border-color: #409eff;
+        }
+        .file-btn{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            outline: none;
+            background-color: transparent;
+            filter:alpha(opacity=0);
+            -moz-opacity:0;
+            /*-khtml-opacity: 0;*/
+            opacity: 0;
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .file-info {
+            display: inline-block;
+            margin-left: 20px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="file-container">
+            <input type="file" class="file-btn" name="file" />
+        </div>
+        <div class="file-info">
+            <span id="file-name"></span>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+<script>
+    console.log("in")
+</script>
