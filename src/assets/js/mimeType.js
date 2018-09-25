@@ -1,0 +1,52 @@
+const mineType = {
+    "avi": "video/x-msvideo",
+    "bin": "application/octet-stream",
+    "bmp": "image/bmp",
+    "c": "text/plain",
+    "class": "application/octet-stream",
+    "css": "text/css",
+    "dir": "application/x-director",
+    "doc": "application/msword",
+    "exe": "application/octet-stream",
+    "gif": "image/gif",
+    "gz": "application/x-gzip",
+    "h": "text/plain",
+    "htm": "text/html",
+    "html": "text/html",
+    "ico": "image/x-icon",
+    "jpe": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "js": "application/x-javascript",
+    "mov": "video/quicktime",
+    "movie": "video/x-sgi-movie",
+    "mp3": "audio/mpeg",
+    "mpeg": "video/mpeg",
+    "mpg": "video/mpeg",
+    "pdf": "application/pdf",
+    "pps": "application/vnd.ms-powerpoint",
+    "ppt": "application/vnd.ms-powerpoint",
+    "rgb": "image/x-rgb",
+    "rtf": "application/rtf",
+    "rtx": "text/richtext",
+    "src": "application/x-wais-source",
+    "svg": "image/svg+xml",
+    "swf": "application/x-shockwave-flash",
+    "tgz": "application/x-compressed",
+    "tif": "image/tiff",
+    "txt": "text/plain",
+    "wav": "audio/x-wav",
+    "wps": "application/vnd.ms-works",
+    "xls": "application/vnd.ms-excel",
+    "xlt": "application/vnd.ms-excel",
+    "z": "application/x-compress",
+    "zip": "application/zip"
+}
+
+// 常见的
+const mineTypeMap = {
+    "图片": "image/bmp image/gif image/jpeg image/svg+xml", // 正则  /image\/*/
+    "音频": "audio/mpeg",
+    "视频": "video/x-msvideo video/mpeg audio/x-wav",
+    "压缩包": "application/x-compressed application/zip", // .tgz .z .zip
+}
