@@ -1,0 +1,123 @@
+{
+    "list": [
+        {
+            "tmpId": 16,
+            "status": 0,
+            "basics": {
+                "name": "小茶test02",
+                "minFileCount": 2,
+                "maxFileCount": 30,
+                "iosTextClipListJson": "ios",
+                "androidTextClipListJson": "android",
+                "musicUrl": null,
+                "resources": null
+            },
+            "material": {
+                "title": null,
+                "thumb": null,
+                "style": null,
+                "loadingPicture": null,
+                "loadingText": null,
+                "producingPicture": null,
+                "producingText": null
+            }
+        },
+        {
+            "tmpId": 7,
+            "status": 0,
+            "basics": {
+                "name": "新年快乐",
+                "minFileCount": 3,
+                "maxFileCount": 20,
+                "iosTextClipListJson": "",
+                "androidTextClipListJson": "",
+                "musicUrl": [],
+                "resources": [
+                    {
+                        "rid": 8,
+                        "tmpId": 7,
+                        "status": 0,
+                        "templateUrl": "",
+                        "version": 7
+                    }
+                ]
+            },
+            "material": {
+                "title": "新年快乐",
+                "thumb": "",
+                "style": 0,
+                "loadingPicture": null,
+                "loadingText": null,
+                "producingPicture": null,
+                "producingText": null
+            }
+        },
+        {
+            "tmpId": 6,
+            "status": 0,
+            "basics": {
+                "name": "一周岁",
+                "minFileCount": 3,
+                "maxFileCount": 20,
+                "iosTextClipListJson": null,
+                "androidTextClipListJson": null,
+                "musicUrl": [],
+                "resources": [
+                    {
+                        "rid": 7,
+                        "tmpId": 6,
+                        "status": 0,
+                        "templateUrl": "",
+                        "version": 6
+                    }
+                ]
+            },
+            "material": {
+                "title": "一周岁",
+                "thumb": "",
+                "style": 0,
+                "loadingPicture": null,
+                "loadingText": null,
+                "producingPicture": null,
+                "producingText": null
+            }
+        },
+        {
+            "tmpId": 1,
+            "status": 0,
+            "basics": {
+                "name": "成长故事",
+                "minFileCount": 3,
+                "maxFileCount": 20,
+                "iosTextClipListJson": "",
+                "androidTextClipListJson": "",
+                "musicUrl": [],
+                "resources": [
+                    {
+                        "rid": 1,
+                        "tmpId": 1,
+                        "status": 0,
+                        "templateUrl": "",
+                        "version": 1
+                    },
+                    {
+                        "rid": 2,
+                        "tmpId": 1,
+                        "status": 0,
+                        "templateUrl": "",
+                        "version": 2
+                    }
+                ]
+            },
+            "material": {
+                "title": "成长故事",
+                "thumb": "",
+                "style": 1,
+                "loadingPicture": "",
+                "loadingText": "成长故事加载中...",
+                "producingPicture": "",
+                "producingText": "成长故事保存中..."
+            }
+        }
+    ]
+}
