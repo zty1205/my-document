@@ -847,7 +847,8 @@
         let file = event.target.files[0];
         let name = file.name
 
-        let resources = JSON.parse(JSON.stringify(this.dialogForm.resources))
+        let resource = this.dialogForm.resources
+        let resources = [...resource]
         resources[index].name = name
         resources[index].old = false
         this.dialogForm.resources = []  // 属性在对象中太深了 Vue的观察者可能观察不到 因此没有达到数据驱动的效果 ，所以先清空
