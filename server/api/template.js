@@ -45,4 +45,12 @@ router.get('/getMVTemplate', (req, res, next) => {
         res.json(commonResult.getClass())
     });
 })
+
+router.get('/img', (req, res, next) => {
+    res.send("hello")
+})
+
+router.post('/postImg', (req, res, next) => {
+    res.send("hello")
+})
 module.exports = router

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0
+		}
+		html {
+			height: 100%;
+			background: -webkit-radial-gradient(center, ellipse, #430d6d 0%, #000000 100%);  
+           	background: radial-gradient(ellipse at center, #430d6d 0%, #000000 100%);  
+		}
+		.stage {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 20em;
+			height: 20em;
+			margin-left: -10em;
+			margin-top: -10em;
+			perspective: 1000px;
+		}
+		.cube {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			transform: rotateX(-20deg) rotateY(-20deg);
+			transform-style: preserve-3d;
+			animation: spin 8s ease-in-out infinite;
+		}
+		@keyframes spin{
+			form{
+				transform: translateZ(-10em)
+				rotateX(0)
+				rotateY(0)
+			}
+			to{
+				transform: translateZ(-10em)
+				rotateX(360deg)
+				rotateY(360deg)
+			}
+		}
+		.cube div {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+
+			background-image: 
+			-webkit-linear-gradient(left,rgba(54,226,248,0.5) 0,
+				rgba(54,226,248,0.5) .125rem,
+				rgba(0,0,0,0) 0,
+				rgba(0,0,0,0) 4.875rem,
+				rgba(54,226,248,0.5) 0),
+			-webkit-linear-gradient(top,rgba(54,226,248,0.5) 0,
+				rgba(54,226,248,0.5) .125rem,
+				rgba(0,0,0,0) 0,
+				rgba(0,0,0,0) 4.875rem,
+				rgba(54,226,248,0.5) 0);
+			background-size: 5em 5em;
+			background-color: rgba(0,0,0,0.5);
+			box-shadow: 0 0 5em rgba(0,128,0,0.4);
+		}
+		.before {
+			transform: translateZ(10em);
+		}
+		.after {
+			transform: translateZ(-10em);
+		}
+		.top {
+			transform: rotateX(90deg) translateZ(10em);
+		}
+		.buttom {
+			transform: rotateX(-90deg) translateZ(10em);
+		}
+		.left {
+			transform: rotateY(-90deg) translateZ(10em);
+		}
+		.right {
+			transform: rotateY(90deg) translateZ(10em);
+		}
+	</style>
+</head>
+<body>
+	<div class="stage">
+		<div class="cube">
+			<div class="before"></div>
+			<div class="after"></div>
+			<div class="top"></div>
+			<div class="buttom"></div>
+			<div class="left"></div>
+			<div class="right"></div>
+		</div>
+	</div>
+</body>
+</html>

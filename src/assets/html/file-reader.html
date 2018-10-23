@@ -47,23 +47,115 @@
         .file-info {
             display: inline-block;
             margin-left: 20px;
-            border: 1px solid red;
+            height: 20px;
+            width: 200px;
+        }
+        .line {
+            height: 1px;
+            width: 100%;
+            margin: 10px auto;
+            color: #ccc;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="file-container">
-            <input type="file" class="file-btn" name="file" />
+            <input type="file" class="file-btn" name="file" onchange="imgChange()" />上传图片
         </div>
         <div class="file-info">
-            <span id="file-name"></span>
+            <span id="img-name"></span>
         </div>
+    </div>
+    <div>
+        <img id="img-container" style="height: 100px;width: 100px;display: none;margin-bottom: 16px;" src="">
+    </div>
+
+    <div>
+        读取进度<progress id="p0" value="10" max="100"></progress>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="container">
+        <div class="file-container">
+            <input type="file" class="file-btn" name="file" onchange="textChange()" />上传文本
+        </div>
+        <div class="file-info">
+            <span id="text-name"></span>
+        </div>
+    </div>
+    <div>
+        <textarea id="text-container" style="height: 200px;width: 200px;margin-bottom: 10px;"></textarea>
+    </div>
+
+    <div>
+        读取进度<progress id="p1" value="0" max="100"></progress>
     </div>
     
 </body>
 </html>
 
 <script>
-    console.log("in")
+    // console.log("in")
+    function imgChange() {
+        var dom = document.getElementsByClassName('file-btn')[0]
+        var domName = document.getElementById('img-name')
+        // console.log(dom.files[0])
+        domName.innerText = dom.files[0].name
+
+        var fileReader = new FileReader()
+        fileReader.onloadstart = function(e) {
+        	document.getElementById("img-container").style.display = "none"
+        	document.getElementById("p0").value = "0"
+        }
+        fileReader.onprogress = function (e) {
+            // console.log("e = ", e)
+            // console.log("load =", e.loaded)  // loaded当前已加载了多少字节 total总共多少字节   800多M的文件 差不多log出30次
+            var percentage = (e.loaded / e.total) * 100
+            document.getElementById("p0").value = percentage
+        } 
+        fileReader.onload = function () {
+        	document.getElementById("img-container").style.display = "block"
+            document.getElementById("img-container").src = this.result // base64位的图片src
+        }
+        fileReader.readAsDataURL(dom.files[0]) // base64
+    }
+    function textChange() {
+        var dom = document.getElementsByClassName('file-btn')[1]
+        var domName = document.getElementById('text-name')
+        // console.log(dom.files[0])
+        domName.innerText = dom.files[0].name
+
+        var fileReader = new FileReader()
+        fileReader.onloadstart = function(e) {
+        	document.getElementById("p0").value = "0"
+        }
+        fileReader.onprogress = function (e) {
+            // console.log("e = ", e)
+            // console.log("load =", e.loaded)  // loaded当前已加载了多少字节 total总共多少字节   800多M的文件 差不多log出30次
+            var percentage = (e.loaded / e.total) * 100
+            document.getElementById("p1").value = percentage
+        } 
+        fileReader.onload = function () {
+            console.log("on load")
+            console.log("result = ", this.result)
+            document.getElementById("text-container").innerText = this.result // base64位的图片src
+        }
+        fileReader.readAsText(dom.files[0], "GBK")  // 文本形式 会乱码 默认utf-8
+    }
+
+    function textChange1() {
+        var dom = document.getElementsByClassName('file-btn')[1]
+        var domName = document.getElementById('text-name')
+        // console.log(dom.files[0])
+        domName.innerText = dom.files[0].name
+
+        var fileReader = new FileReader()
+        fileReader.onload = function () {
+            document.getElementById("text-container").innerText = this.result // base64位的图片src
+        }
+        fileReader.readAsBinaryString(dom.files[0])  // 二进制流 会乱码
+    }
 </script>
