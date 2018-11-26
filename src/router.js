@@ -57,6 +57,11 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./components/demo/uploadImg.vue")
+    },
+    {
+      path: '/slotParent',
+      component: () => import('@/components/demo/slotParent'),
+      title: 'slot示例'
     }
   ]
 });

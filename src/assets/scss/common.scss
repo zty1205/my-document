@@ -21,3 +21,37 @@
       font-size: $font_size * 1px;
     }
   }
+
+  @mixin SizeScale($W, $H, $Scale: 1, $LH:false) {
+    @if $LH{
+      line-height: $LH * $Scale;
+    }
+    width: $W * $Scale;
+    height: $H * $Scale;
+  }
+  
+  @mixin Img_Uploader($ImgWidth: 100px, $ImgHeight: 100px,$Scale: 1) {
+    /deep/ .photo-uploader-icon {
+      font-size: 20px;
+      color: #8c939d;
+      @include SizeScale($ImgWidth, $ImgHeight, 1, $ImgHeight);
+      text-align: center;
+    }
+    /deep/ .photo-show {
+      display: block;
+      margin: 0 auto;
+      @include SizeScale($ImgWidth, $ImgHeight, 1, $ImgHeight);
+    }
+  
+    /deep/ .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    /deep/ .el-upload:hover {
+      border-color: #409eff;
+    }
+  
+  }
