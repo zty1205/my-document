@@ -7,6 +7,10 @@ const fs = require('fs'); //文件模块
 const ResultCode = require("../class/ResultCode")
 const CommonResult = require ("../class/CommonResult")
 
+const LOCAL_PATH = 'public/localStorage/img/'
+const multer = require("multer")
+const upload = multer({ dest: LOCAL_PATH });
+
 // console.log("ResultCode = ", ResultCode)
 // console.log("CommonResult = ", CommonResult)
 
@@ -50,7 +54,24 @@ router.get('/img', (req, res, next) => {
     res.send("hello")
 })
 
-router.post('/postImg', (req, res, next) => {
-    res.send("hello")
+router.post('/postImg', upload.single("img"), (req, res, next) => {
+    // 不做任何操作 直接接受会在文件下生成一个二进制文件
+
+    // 简单的做重命名
+    let file = req.file
+    let name = file.originalname
+    let newName = new Date().getTime() + "_" + name
+    let new_path = LOCAL_PATH + newName
+    fs.renameSync(LOCAL_PATH + file.filename, new_path);
+    let pathList = new_path.split("/")
+    pathList.shift()
+    let path = pathList.join("/")
+    let result = {
+        rc: 0,
+        original: path,
+        msg: "上传成功"
+    }
+    // 前端可以使用FileReader显示图片或使用服务器返回的地址
+    res.json(result)
 })
 module.exports = router
