@@ -1,6 +1,6 @@
 <template>
     <div class="son">
-        <div class="formBody qbbMoney-toEmail">
+        <div class="formBody toEmail">
             <el-dialog title="邮件导出" :visible="toEmailVisible" :before-close="close" width="450px" class="g-edit-dialog g-scroll-dialog">
                 
                 <slot name="timer"></slot>
@@ -13,7 +13,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        @qbb6.com
+                        @zty.com
                     </el-col>
                     </el-row>
                     <el-row class="excel-info">
@@ -34,8 +34,8 @@
 </template>
 
 <script>
-function isQbb6Email(rule, value, callback) {
-  value = value ? value.replace(" ", "") + "@qbb6.com" : value;
+function isEmail(rule, value, callback) {
+  value = value ? value.replace(" ", "") + "@zty.com" : value;
   let reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
   let flag = reg.test(value);
   if (value && !flag) {
@@ -58,7 +58,7 @@ export default {
             emailFormRules: {
                 email: [
                     { required: true, trigger: "blur change", message: "不能为空" },
-                    { validator: isQbb6Email, trigger: "blur change" }
+                    { validator: isEmail, trigger: "blur change" }
                 ]
             }
         }
@@ -75,10 +75,10 @@ export default {
             });
             this.$nextTick(() => {
                 let errorLen = document
-                .querySelector(".qbbMoney-toEmail")
+                .querySelector(".toEmail")
                 .querySelectorAll(".el-form-item__error").length;
                 if (errorLen === 0) {
-                this.$emit("save", this.emailFormModel.email + "@qbb6.com");
+                this.$emit("save", this.emailFormModel.email + "@zty.com");
                 }
             });
         },
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .qbbMoney-toEmail {
+ .toEmail {
   /deep/ .el-dialog__body {
     padding: 15px 20px 40px 20px;
     .el-input {

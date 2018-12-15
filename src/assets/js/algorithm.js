@@ -142,3 +142,33 @@ function S4() {
  console.log("quick sort = ", mergeSort([...arr]))
  console.log(" 19 index = 1 ? ", binarySearch(arr1,19))
  */
+
+ /**
+  * 用个哈希散列的方法判断是否含有重复的item
+  * list 传入数组 id传入可以标识 item 的主键 字符串
+  * 如果list很多 那么应对数组按 id 进行排序
+  */
+ const hexDuplicate = (list, id) => {
+    if (!list || list.length < 2) {
+        return false
+    }
+    let hexMap = {}
+    for (let i = 0; i < list.length; i++) {
+        let ele = list[i]
+        if (hexMap[ele[id]]) {
+            return true
+        }
+        hexMap[ele[id]] = true
+    }
+    return false
+}
+/*
+    let arr = [
+		{ id: 11, name: "zty" },
+		{ id: 12, name: "zty" },
+		{ id: 13, name: "zty" },
+		{ id: 14, name: "zty" },
+		{ id: 11, name: "zty" }
+    ]
+    hex(arr, "id") ==> true
+ */
