@@ -36,19 +36,19 @@
     <div class="date-year">
         <div class="date-m-container" v-for="mouth in mouthList" :key="mouth">
             <div class="date-mouth-box">
-            <div class="date-mouth">{{ mouth }}</div>
-            <div class="date-week-container">
-                <div class="date-week-box" v-for="week in weekList" :key="week">
-                    <span>{{ week }}</span>
+                <div class="date-mouth">{{ mouth }}</div>
+                <div class="date-weeks-container">
+                    <div class="date-week-box" v-for="week in weekList" :key="week">
+                        <span>{{ week }}</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div v-for="item in dayList" class="date-day-box" :key="item.date">
-                <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
-                    <span class="day-number" v-if="item.status">{{ item.desc }}</span>
-                    <span v-else></span>
+                
+                <div v-for="item in dayList" class="date-day-box" :key="item.date">
+                    <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
+                        <span class="day-number" v-if="item.status">{{ item.desc }}</span>
+                        <span v-else></span>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <!-- <div class="date-m-container">
@@ -170,36 +170,53 @@
 </script>
 
 <style lang="scss" scoped>
-$DATE_DAY_NUMBER_BOX_RADIO: 80%;
-$DATE_DAY_BOX_BORDER: 1px solid #ccc;
-$date_number_container_height: 40px;
+
+$date-m-container_heigth: 240px; // 一个月容器的高度
+
+$date_mouth_box_heigth: 40px;
+
+$date_week_box_height: 30px;
+$date_week_box_weight: 30px;
+
+$date_week_day_border: 1px solid #606266;  // 周和日隔开的一像素边框
+
+$date_day_box_height: 30px;
+$date_day_box_weight: 30px;
+
+$date_number_box_ratio: 80%; // 日期外部格子占父容器的比例
+$date_number_checked_color: green;
+$date_number_checked_ratio: 75%; // 选中后显示的圆形背景占父容器的比例
+
+@mixin flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .date-year {
-    padding: 15px 10px;
-    height: 380px;
-    width: 100%;
+    padding: 10px 4px;
+    height: $date-m-container_heigth;
+    width: $date_day_box_weight * 7 * 4 - 40px;
     overflow: auto;
+    border: 1px solid red;
 }
 
 .date-m-container {
     display: inline-block;
-    margin: 0 4px;
+    margin: 2px 4px 4px 10px;
     height: 100%;
+    width: $date_day_box_weight * 7;
 }
 
-.date-num {
-  display: inline-block;
-  border: 1px solid red;
-}
   .date-mouth-box {
     display: flex;
     height: 50px;
-    width: 350px;
+    width: $date_day_box_height * 7;
     flex-wrap: wrap;
   }
   .date-mouth {
     width: 100%;
-    box-sizing: border-box;
+    // box-sizing: border-box;
     // border:1px solid #ccc;
     font-size: 16px;
     font-weight: 500;
@@ -208,26 +225,24 @@ $date_number_container_height: 40px;
     text-align: center;
     color: #606266;
   }
-  .date-day-box , .date-week-box{
+
+  .date-week-box{
     box-sizing: border-box;
-    border:1px solid #ccc;
-    height: 100%;
+    // border:1px solid red;
+    height: $date_week_box_height;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flexCenter;
     width: calc(1/7*100%);
   }
-  .date-week-container {
+  .date-weeks-container {
     position: relative;
     width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 30px;
+    @include flexCenter;
+    margin-bottom: 2px;
     // width: calc(1/7*100%);
   }
-  .date-week-container::after {
+  .date-weeks-container::after {
     content: "";
     box-sizing: border-box;
     position: absolute;
@@ -235,53 +250,40 @@ $date_number_container_height: 40px;
     left: 4%;
     width: 184%;
     height: 200%;
-    border-bottom: 1px solid#c0c4cc;
+    border-bottom:  $date_week_day_border; //1px solid#c0c4cc;
     transform: scale(0.5);
     -webkit-transform: scale(0.5);
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0;
     pointer-events: none;
   }
-  .date-day-box--checked {
-    border-radius: 100% ;
-    box-sizing: border-box;
-    border:1px solid #ccc;
-    height: 100%;
-    text-align: center;
-    color: red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc(1/7*100%);
-    cursor: pointer;
 
+  .date-day-box {
+    box-sizing: border-box;
+    // border:1px solid #ccc;
+    height: $date_day_box_height;
+    text-align: center;
+    @include flexCenter;
+    width: calc(1/7*100%);
   }
   .day-number-container {
-    height: 80%;
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: $date_number_box_ratio;
+    width: $date_number_box_ratio;
+    @include flexCenter;
     cursor: pointer;
   }
   .day-number-container--checked {
-    height: 60%;
-    width: 60%;
-    border-radius: 60%;
+    height: $date_number_checked_ratio;
+    width: $date_number_checked_ratio;
+    border-radius: 100%;
     box-sizing: border-box;
     // border:1px solid #ccc;
-    background-color: #4094ff;
+    background-color: $date_number_checked_color; // #4094ff;
     color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flexCenter;
     cursor: pointer;
   }
   .day-number {
-    // height: 100%;
-    // line-height: 100%;
-    // text-align: center;
-    // vertical-align: middle;
     font-size: 14px;
     user-select: none;
   }
