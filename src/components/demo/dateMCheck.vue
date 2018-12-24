@@ -31,7 +31,7 @@
       <!--</div>-->
     <!--</div>-->
 
-    <h3>日期</h3>
+    <h3>固定的</h3>
 
     <div class="date-year">
         <div class="date-m-container" v-for="mouth in mouthList" :key="mouth">
@@ -51,24 +51,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="date-m-container">
-            <div class="date-mouth-box">
-            <div class="date-mouth">2018年12月</div>
-            <div class="date-week-container">
-                <div class="date-week-box" v-for="week in weekList" :key="week">
-                    <span>{{ week }}</span>
-                </div>
-            </div>
-            
-            <div v-for="item in dayList" class="date-day-box" :key="item.date">
-                <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
-                    <span class="day-number" v-if="item.status">{{ item.desc }}</span>
-                    <span v-else></span>
-                </div>
-                
-            </div>
-            </div>
-        </div> -->
     </div>
 
     <!-- <div class="date-mouth-box">
@@ -90,6 +72,30 @@
 
     <div @click="showDay">查看</div>
     <div @click="onShow">选中</div> -->
+
+    <h3>生成的</h3>
+    <p>变量没有绑定在vue上，观察不到变化，所以不会变色</p>
+
+      <div class="date-year">
+        <div class="date-m-container" v-for="(mouth, m) in getMouthList()" :key="mouth">
+            <div class="date-mouth-box">
+                <div class="date-mouth">{{ mouth }}</div>
+                <div class="date-weeks-container">
+                    <div class="date-week-box" v-for="week in weekList" :key="week">
+                        <span>{{ week }}</span>
+                    </div>
+                </div>
+                
+                <div v-for="(item, index) in getDayListByMouth(m+1)" class="date-day-box" :key="index">
+                    <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
+                        <span class="day-number" v-if="item.status">{{ item.desc }}</span>
+                        <span v-else></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
   </div>
 </template>
@@ -137,6 +143,19 @@
     {date: "2019/1/4", desc: "4", status: 0, chosen: false},
     {date: "2019/1/5", desc: "5", status: 0, chosen: false},
     {date: "2019/1/6", desc: "6", status: 0, chosen: false}]
+
+    function getDaysInMouth(year, mouth, day = 1) { // 获取一个月有几天
+      let dateString = `${year}/${mouth}/${day}`
+      let date = new Date(dateString)
+      date.setMonth(date.getMonth() + 1)
+      date.setDate(0)
+      return date.getDate()
+    }
+    function getDaysInWeek(year, mouth = 1, day = 1) { // 获取某一是星期几
+      let dateString = `${year}/${mouth}/${day}`
+      let date = new Date(dateString)
+      return date.getDay()
+    }
   export default {
     name: "DateChoose",
     data() {
@@ -144,12 +163,90 @@
         dayList: date3,
         weekList: ["一", "二", "三", "四", "五", "六", "七"],
         customColor: "blue",
-        today: new Date(),
+        today: "",
+        curYear: 0,
+        curMouth: 1,
         mouthList: ["2018/1", "2018/2", "2018/3", "2018/4", "2018/5", "2018/6", 
         "2018/7", "2018/8", "2018/9", "2018/10", "2018/11", "2018/12"]
       }
     },
+    mounted() {
+      this.initNow()
+      this.initDayList()
+    },
     methods: {
+      initNow() {
+        let cur = new Date()
+        this.today = cur
+        this.curYear = cur.getFullYear()
+        this.curMouth = cur.getMonth()
+      },
+      initDayList() {
+        let year = 2019
+        let mouth = 1
+        let day = 1
+        // getDay 得到星期几
+        let days_in_mouth = getDaysInMouth(year, mouth)
+
+        let dayList = []
+        for (let i = 1; i <= days_in_mouth; i++) {
+          let date_item = {
+            date: `${year}/${mouth}/${i}`,
+            desc: `${i}`,
+            status: 1,
+            chosen: false
+          }
+          dayList.push(date_item)
+        }
+        let firstDay_in_week = getDaysInWeek(year, mouth, day)
+        // 没有找到很好的v-for遍历的方法所以需要在dayList中填充一个冗余的对象
+        for (let j = 1; j < firstDay_in_week; j++) {
+          dayList.unshift({
+            date: "0/0/0",
+            desc: "辅助时间",
+            status: 0,
+            chosen: false
+          })
+        }
+        console.log("init dayList = ", dayList)
+        this.dayList = dayList
+      },
+      getDayListByMouth(m) {
+        let year = this.curYear
+        let mouth = m
+        let day = 1
+        // getDay 得到星期几
+        let days_in_mouth = getDaysInMouth(year, mouth)
+
+        let dayList = []
+        for (let i = 1; i <= days_in_mouth; i++) {
+          let date_item = {
+            date: `${year}/${mouth}/${i}`,
+            desc: `${i}`,
+            status: 1,
+            chosen: false
+          }
+          dayList.push(date_item)
+        }
+        let firstDay_in_week = getDaysInWeek(year, mouth, day)
+        // 没有找到很好的v-for遍历的方法所以需要在dayList中填充一个冗余的对象
+        for (let j = 1; j < firstDay_in_week; j++) {
+          dayList.unshift({
+            date: "0/0/0",
+            desc: "辅助时间",
+            status: 0,
+            chosen: false
+          })
+        }
+        return dayList
+      },
+      getMouthList() {
+        let mouthList = []
+        for (let i = 1; i <= 12; i++) {
+          mouthList.push(`${this.curYear}年${i}月`)
+        }
+        return mouthList
+      },
       handleChangeCurday() {
 
       },
@@ -171,7 +268,7 @@
 
 <style lang="scss" scoped>
 
-$date-m-container_heigth: 240px; // 一个月容器的高度
+$date-m-container_heigth: 220px; // 一个月容器的高度
 
 $date_mouth_box_heigth: 40px;
 
@@ -204,7 +301,7 @@ $date_number_checked_ratio: 75%; // 选中后显示的圆形背景占父容器�
 .date-m-container {
     display: inline-block;
     margin: 2px 4px 4px 10px;
-    height: 100%;
+    height: $date-m-container_heigth;
     width: $date_day_box_weight * 7;
 }
 
