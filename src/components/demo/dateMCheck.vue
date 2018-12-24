@@ -76,25 +76,56 @@
     <h3>生成的</h3>
     <p>变量没有绑定在vue上，观察不到变化，所以不会变色</p>
 
-      <div class="date-year">
-        <div class="date-m-container" v-for="(mouth, m) in getMouthList()" :key="mouth">
-            <div class="date-mouth-box">
-                <div class="date-mouth">{{ mouth }}</div>
-                <div class="date-weeks-container">
-                    <div class="date-week-box" v-for="week in weekList" :key="week">
-                        <span>{{ week }}</span>
-                    </div>
-                </div>
-                
-                <div v-for="(item, index) in getDayListByMouth(m+1)" class="date-day-box" :key="index">
-                    <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
-                        <span class="day-number" v-if="item.status">{{ item.desc }}</span>
-                        <span v-else></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="date-year">
+      <div class="date-m-container" v-for="(mouth, m) in getMouthList()" :key="mouth">
+          <div class="date-mouth-box">
+              <div class="date-mouth">{{ mouth }}</div>
+              <div class="date-weeks-container">
+                  <div class="date-week-box" v-for="week in weekList" :key="week">
+                      <span>{{ week }}</span>
+                  </div>
+              </div>
+              
+              <div v-for="(item, index) in getDayListByMouth(m+1)" class="date-day-box" :key="index">
+                  <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
+                      <span class="day-number" v-if="item.status">{{ item.desc }}</span>
+                      <span v-else></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
 
+    <h3>绑在vue上</h3>
+    <p>点了下一年，会清空上一年的数据</p>
+    <div class="date-top-box">
+      <div class="op-last-year">
+        <el-button type="primary" icon="el-icon-d-arrow-left" @click="goLastYear"></el-button>
+      </div>
+      <div calss="year-title">{{ curYear }}年</div>
+      <div class="op-next-year">
+        <el-button type="primary" icon="el-icon-d-arrow-right" @click="goNextYear"></el-button>
+      </div>
+    </div>
+
+    <div class="date-year">
+      <div class="date-m-container" v-for="(mouth, m) in getMouthList()" :key="mouth">
+          <div class="date-mouth-box">
+              <div class="date-mouth">{{ mouth }}</div>
+              <div class="date-weeks-container">
+                  <div class="date-week-box" v-for="week in weekList" :key="week">
+                      <span>{{ week }}</span>
+                  </div>
+              </div>
+              
+              <div v-for="(item, index) in dayListInYear[m+1]" class="date-day-box" :key="index">
+                  <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
+                      <span class="day-number" v-if="item.status">{{ item.desc }}</span>
+                      <span v-else></span>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
 
   </div>
@@ -154,7 +185,11 @@
     function getDaysInWeek(year, mouth = 1, day = 1) { // 获取某一是星期几
       let dateString = `${year}/${mouth}/${day}`
       let date = new Date(dateString)
-      return date.getDay()
+      let w = date.getDay();
+      if(w === 0 || w === "0") { // 美国星期天是第一天 index = 0
+        w = 7
+      }
+      return w;
     }
   export default {
     name: "DateChoose",
@@ -167,12 +202,14 @@
         curYear: 0,
         curMouth: 1,
         mouthList: ["2018/1", "2018/2", "2018/3", "2018/4", "2018/5", "2018/6", 
-        "2018/7", "2018/8", "2018/9", "2018/10", "2018/11", "2018/12"]
+        "2018/7", "2018/8", "2018/9", "2018/10", "2018/11", "2018/12"],
+        dayListInYear: {}
       }
     },
     mounted() {
       this.initNow()
       this.initDayList()
+      this.initDayListInYear()
     },
     methods: {
       initNow() {
@@ -247,6 +284,14 @@
         }
         return mouthList
       },
+      initDayListInYear() {
+        this.dayListInYear = {}
+        let map = {}
+        for (let m = 1; m <= 12; m++) {
+          map[m] = this.getDayListByMouth(m)
+        }
+        this.dayListInYear = map
+      },
       handleChangeCurday() {
 
       },
@@ -260,6 +305,14 @@
       onShow() {
           let dayChosen = this.dayList.filter((x) => x.chosen)
           console.log("dayChosen = ", dayChosen)
+      },
+      goLastYear() {
+        this.curYear--;
+        this.initDayListInYear()
+      },
+      goNextYear() {
+        this.curYear++;
+        this.initDayListInYear()
       }
     }
 
@@ -336,7 +389,7 @@ $date_number_checked_ratio: 75%; // 选中后显示的圆形背景占父容器�
     width: 100%;
     height: 30px;
     @include flexCenter;
-    margin-bottom: 2px;
+    margin-bottom: 2px; 
     // width: calc(1/7*100%);
   }
   .date-weeks-container::after {
@@ -383,5 +436,20 @@ $date_number_checked_ratio: 75%; // 选中后显示的圆形背景占父容器�
   .day-number {
     font-size: 14px;
     user-select: none;
+  }
+
+
+  .date-top-box {
+    @include flexCenter;
+    height: 30px;
+    width: 80%;
+    margin: 10px auto;
+  }
+  .op-last-year, .op-next-year {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .year-title {
+    width: 120px;
   }
 </style>
