@@ -1,32 +1,19 @@
 "use strict"
 
-export default utils = {
+const utils = {
 
     /**
      * 数据深拷贝
      * 1. JSON.stringify(JSON.parse(array))
      * 2. [...array]
      */
-    simpleDeepCopyArray: function(array) {
-        if(array && array instanceof Array) {
-            return [...array];
-        } else {
-            return array;
-        }
-    },
 
     /**
      * 对象深拷贝
      * 1. JSON.stringify(JSON.parse(obj))
      * 2. {...obj}
+     * 3. Object.assign({}, target)
      */
-    simpleDeepCopyObject: function(obj) {
-        if(obj && obj.constructor === Object) {
-            return {...obj};
-        } else {
-            return obj;
-        }
-    },
 
     /**
      * 二分查找某一item在数组中的位置
@@ -35,18 +22,18 @@ export default utils = {
         if(!(array instanceof Array)) {
             throw new Error("The first argument in function must be a instance of Array.")
         }
-        let end = (end != null) ? end : array.length-1; // end 可以为0
-        let start = start || 0;
-        if(start > end){
+        let _end = (end != null) ? end : array.length-1; // end 可以为0
+        let _start = start || 0;
+        if(_start > _end){
             return false;
         }
-        let m = Math.floor((start + end) / 2);
+        let m = Math.floor((_start + _end) / 2);
         if(item == array[m]){
             return m;
         }else if(item < array[m]){
-            return binarySearch(array, item, start, m-1) //递归调用
+            return binarySearch(array, item, _start, m-1) //递归调用
         }else{
-            return binarySearch(array, item, m+1, end);
+            return binarySearch(array, item, m+1, _end);
         }
     },
 
@@ -60,18 +47,18 @@ export default utils = {
         if(!property || typeof property !== "string" ) {
             throw new Error("The second argument in function must be a String.")
         }
-        let end = (end != null) ? end : array.length-1; // end 可以为0
-        let start = start || 0;
-        if(start > end){
+        let _end = (end != null) ? end : array.length-1; // end 可以为0
+        let _start = start || 0;
+        if(_start > _end){
             return false;
         }
-        let m = Math.floor((start + end) / 2);
+        let m = Math.floor((_start + _end) / 2);
         if(value == array[m][property]){
             return m + 1;
         }else if(value < array[m][property]){
-            return binarySearchByName(array, property, value, start, m-1) //递归调用
+            return binarySearchByName(array, property, value, _start, m-1) //递归调用
         }else{
-            return binarySearchByName(array, property, value, m+1, end);
+            return binarySearchByName(array, property, value, m+1, _end);
         }
     },
 
@@ -81,7 +68,7 @@ export default utils = {
      * parent: String 指向父元素的id
      */
     buildChildrenTree: function (arr, id, parent) {
-        let array = this.simpleDeepCopyArray(arr)
+        let array = [...arr]
 		for(let i = array.length - 1; i >= 0; i--) {
 			let node = array[i]
 			if(node[parent]) {
@@ -124,18 +111,18 @@ export default utils = {
      * parent: String 指向父元素的id
      * property: String map 的 value值是父元素的那个属性，可以为空，此时返回整个父元素
      */
-	buildParentMap: function (array, id, parent, property) {
+	buildParentMap: function (arr, id, p, property) {
 		let map = {}		
-		let array = array || []
-		let id = id || "id"
-		let parent = parent || "parent"
+		let array = arr || []
+		let _id = id || "id"
+		let parent = p || "parent"
 		if(property) {
 			for(let i = array.length - 1; i >= 0; i--) {
 				let node = array[i]
 				if(node[parent]) {
 					for(let j =0, len_j = array.length; j < len_j; j++) {
-						if(node[parent] == array[j][id]) {
-							map[node[id]] = array[j][property]
+						if(node[parent] == array[j][_id]) {
+							map[node[_id]] = array[j][property]
 						}
 					}
 				}
@@ -145,8 +132,8 @@ export default utils = {
 				let node = array[i]
 				if(node[parent]) {
 					for(let j =0, len_j = array.length; j < len_j; j++) {
-						if(node[parent] == array[j][id]) {
-							map[node[id]] = array[j]
+						if(node[parent] == array[j][_id]) {
+							map[node[_id]] = array[j]
 						}
 					}
 				}
@@ -157,3 +144,5 @@ export default utils = {
     }
     
 }
+
+export default utils
