@@ -23,7 +23,7 @@
                   </div>
               </div>
               
-              <div v-for="(item, index) in dayListInYear[m+1]" class="date-day-box" :key="index">
+              <div v-for="(item, index) in dayListInYear[m]" class="date-day-box" :key="index">
                   <div :class="item.chosen ? 'day-number-container--checked' : 'day-number-container'"  @click="clickDay(item)">
                       <span class="day-number" v-if="item.status">{{ item.desc }}</span>
                       <span v-else></span>
@@ -40,10 +40,18 @@
 
     <div>
       <p>已选择了</p>
-      <p v-for="(value, key) in nowChooseDayMap" :key="key">
-        {{key}}年 - {{value}}
-      </p>
+      <div v-for="(list, key) in nowChooseDayMap" :key="key">
+        <div style="display: inline-block">{{ key }}年</div>
+        <div style="display: inline-block" v-for="(item, idx) in list" :key="idx">
+          --{{ item.date }}
+        </div>
+      </div>
     </div>
+
+    <el-row>
+      <el-button type='primary' @click="setDate">点击赋值</el-button>
+      <el-button type='primary' @click="setDates">区间赋值</el-button>
+    </el-row>
 
   </div>
 </template>
@@ -77,16 +85,22 @@
         weekList: ["一", "二", "三", "四", "五", "六", "七"],
         today: "",
         curYear: 0,
+        minYear: 2018,
         curMouth: 1,
-        dayListInYear: {},
-        nowChooseNameList: [],
+        dayListInYear: [],
+        /**
+         * {year: chooseList}
+         * {
+         *  2018: [],
+         *  2019: []
+         * }
+         */
         nowChooseDayMap: {},
-        nowChooseItemMap: {}
       }
     },
     mounted() {
       this.initNow()
-      this.initDayList()
+      // this.initDayList()
       this.initDayListInYear()
     },
     methods: {
@@ -97,7 +111,7 @@
         this.curMouth = cur.getMonth()
       },
       initDayList() {
-        let year = 2019
+        let year = new Date().getFullYear()
         let mouth = 1
         let day = 1
         // 一个月有几天
@@ -123,7 +137,7 @@
             chosen: false
           })
         }
-        console.log("init dayList = ", dayList)
+        // console.log("init dayList = ", dayList)
         this.dayList = dayList
       },
       getDayListByMouth(m) {
@@ -164,12 +178,11 @@
       },
       initDayListInYear() {
         // 需要根据已选择的时间，进行回显， 特别是在更换年份的时候
-        this.dayListInYear = {}
-        let map = {}
+        let array = []
         for (let m = 1; m <= 12; m++) {
-          map[m] = this.getDayListByMouth(m)
+          array[m - 1] = this.getDayListByMouth(m)
         }
-        this.dayListInYear = map
+        this.dayListInYear = array
       },
       clickDay(item) {
         // console.log("item = ", item)
@@ -179,28 +192,18 @@
         // 在已选择的列表中找
         // 找到且原状态选中 删除该记录 
         // 没找到 加入该记录
-        let time = item.date
-        let index = this.nowChooseNameList.indexOf(time)
-        if (item.chosen) {
-          if (index = -1) {
-            this.nowChooseNameList.push(time)
-          }
-        } else {
-          if (index > -1) {
-            this.nowChooseNameList.splice(index, 1)
-          }
-        }
-        // console.log("this.nowChooseNameList = ", this.nowChooseNameList)
-        
         let curYear = this.curYear
         if (!this.nowChooseDayMap[curYear]) {
           this.nowChooseDayMap[curYear] = []
         }
         let dayList = this.nowChooseDayMap[curYear]
-        let idx = dayList.indexOf(time)
+        let idx = dayList.findIndex(x => {
+          return x.date === item.date
+        })
+        console.log("idx = ", idx)
         if (item.chosen) {
           if (idx = -1) {
-            dayList.push(time)
+            dayList.push(item)
           }
         } else {
           if (idx > -1) {
@@ -217,6 +220,64 @@
       goNextYear() {
         this.curYear++;
         this.initDayListInYear()
+      },
+      setDate() {
+        let array = ["2019/1/1", "2019/2/2"]
+        this.setItemsByArray(array)
+      },
+      setDates() {
+        this.setItemsByTimes("2019/2/1", "2019/2/16")
+      },
+      setItemsByItemArray(array) {
+        array.forEach(x => {
+          let time = new Date(x.date)
+          let year = time.getFullYear()
+          let mouth = time.getMonth()
+          let date = time.toLocaleDateString() // "2019/1/1"
+          let item = this.dayListInYear[mouth].find(ele => {
+            return ele.date == date
+          })
+          console.log("item = ", item)
+          if (item) {
+            item.chosen = true
+            if (!this.nowChooseDayMap[year]) {
+              this.nowChooseDayMap[year] = []
+            }
+            this.nowChooseDayMap[year].push(item)
+          }
+        })
+      },
+      setItemsByArray(array = []) {
+        array.forEach(x => {
+          let time = new Date(x)
+          let year = time.getFullYear()
+          let mouth = time.getMonth()
+          let date = time.toLocaleDateString() // "2019/1/1"
+          let item = this.dayListInYear[mouth].find(ele => {
+            return ele.date == date
+          })
+          console.log("item = ", item)
+          if (item) {
+            item.chosen = true
+            if (!this.nowChooseDayMap[year]) {
+              this.nowChooseDayMap[year] = []
+            }
+            this.nowChooseDayMap[year].push(item)
+          }
+        })
+      },
+      setItemsByTimes(start, end) {
+        console.log("11")
+        let mouth = new Date(start).getMonth()
+        let list = this.dayListInYear[mouth]
+        let s = new Date(start).getTime()
+        let e = new Date(end).getTime()
+        list.forEach(x => {
+          let t = new Date(x.date).getTime()
+          if (t >= s && t <= e) {
+            x.chosen = true
+          }
+        })
       }
     }
 
