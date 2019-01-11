@@ -53,6 +53,11 @@ export default new Router({
       path: '/slotParent',
       component: () => import('@/components/demo/slotParent'),
       title: 'slot示例'
+    },
+    {
+      path: '/dateMCheck',
+      component: () => import('@/components/demo/dateMCheck'),
+      title: '自定义日期多选'
     }
   ]
 });
