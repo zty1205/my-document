@@ -6,7 +6,7 @@ const arrayUtils = {
      * @param {*} keyString 
      * @param {*} valueString 
      */
-    buildMap: function(list = [], keyString = "id", valueString) {
+    buildMap: (list = [], keyString = "id", valueString) => {
         if ((typeof keyString) != "string") {
             throw new Error("The second argument in function must a string")
         }
@@ -34,7 +34,7 @@ const arrayUtils = {
      * @param {*} start 
      * @param {*} end 
      */
-    binarySearchItem: function(list = [], keyString = "id", value = 1, start = 0, end) {
+    binarySearchItem: (array = [], keyString = "id", value = 1, start = 0, end) => {
         let _end = (end != null) ? end : array.length-1; // end 可以为0
         if(start > _end){
             return false;
@@ -49,9 +49,37 @@ const arrayUtils = {
         }
     },
 
-    findItem: function(array = [], keyString = "id", value) {
+    findItem: (array = [], keyString = "id", value) => {
         return array.find((ele) => {
             ele[keyString] == value
         })
+    },
+
+    hexDuplicate: (arr, key) => {
+        let set = new Set()
+        return arr.filter((a) => !set.has(a[key]) && set.add(a[key]))
+    },
+
+    hexCount: (buildKey) => {
+        let map = {}
+        if (buildKey) {
+            if (Object.prototype.toString.call(buildKey) !== "[object Function]") {
+                throw new Error("The argument must be a function!")
+            } else {
+                this.forEach(x => {
+                    let key = buildKey(x)
+                    map[key] = map[key] || 0;
+                    map[key]++;
+                }) 
+            }
+        } else {
+            this.forEach(x => {
+                map[x] = map[key] || 0;
+                map[x]++;
+            })
+        }
+        return map
     }
+
+
 }

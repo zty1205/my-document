@@ -39,3 +39,60 @@ console.log("sort() array = ", arr1.sort((a,b) => {return a.age - b.age} ))
 
 console.log("sort() array = ", arr2.sort((a,b) => {return b.age - a.age} ))
 // ==> 返回按age降序排列的数组s
+
+let array = [1,1,8,9,3,4,"z","z","yy"]
+let arr = [
+    { id: 11, name: "zty" },
+    { id: 11, name: "zty" },
+    { id: 11, name: "zty" },
+    { id: 12, name: "zty" },
+    { id: 13, name: "zty" },
+    { id: 13, name: "zty" },
+    { id: 14, name: "zty" }  
+]
+
+let mixArray = [1,5,"z",{id: 1, name: "2"}, "z", 11]
+
+    function buildKey(item) {
+        return item.id
+    }
+
+
+    Array.prototype.hexCount = function(buildKey) {
+    let map = {}
+    if (buildKey) {
+        if (Object.prototype.toString.call(buildKey) !== "[object Function]") {
+            throw new Error("The argument must be a function!")
+        } else {
+            this.forEach(x => {
+                let key = buildKey(x)
+                map[key] = map[key] || 0;
+                map[key]++;
+            }) 
+        }
+    } else {
+        this.forEach(x => {
+            map[x] = map[x] || 0;
+            map[x]++;
+        })
+    }
+    return map
+}
+
+    let map = array.hexCount()
+    console.log("map = ", map)
+
+    let map2 = arr.hexCount(buildKey)
+    console.log("map2 = ", map2)
+         
+    let map3 = mixArray.hexCount()
+    console.log("map3 = ", map3)
+
+    let map4 = mixArray.hexCount(buildKey)
+    console.log("map4 = ", map4)
+
+    let a = mixArray.sort()
+    console.log("a = ", a)
+
+    let b = array.sort()
+    console.log("b = ", b)
