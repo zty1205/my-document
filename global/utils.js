@@ -1,7 +1,7 @@
 
 export const emptyObject = Object.freeze({})
 
-export function isUndef (v)] {
+export function isUndef (v) {
   return v === undefined || v === null
 }
 

@@ -1,0 +1,6 @@
+@charset "utf-8";
+@import "./function";
+
+.test {
+  margin-left: multiple(20px, 3);
+}

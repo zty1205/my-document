@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+
+@function multiple($num, $multiple) {
+  @if type-of($num) == 'number' and type-of($multiple) == 'number' {
+    @return $num * $multiple;
+  } @else {
+    @return $num;
+  }
+}

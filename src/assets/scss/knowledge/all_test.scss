@@ -1,0 +1,322 @@
+@charset "utf-8";
+
+// 不用_开头
+@import "./function";
+
+/* ---------- 变量 - 局部与全局 ---------- */
+$color-g: #fff;
+.test-part-var {
+	.zero {
+		color: $color-g; // 全局变量
+	}
+	.one {
+		$color-1: #ccc; // 局部变量
+		border: 1px solid $color-1;
+	}
+	.two {
+		background: $color-1; // error
+	}
+}
+
+/* ---------- 数据类型 ---------- */
+$null: null;
+$str-1: "px";
+.test-data-type {
+	display: length($null) == 1;
+	width: $null + $str-1; //  Invalid null operation: "null plus "px"".)
+}
+
+/* ---------- 运算 ---------- */
+$one: 1;
+$four: 4;
+$onePX: 1px;
+$fivePX: 5px;
+$px: px;
+$strPX: "px";
+$color-2: #fff;
+$color-3: #adc;
+$rgb-1: rgb(255, 255, 255); // #fff
+$rgb-2: rgb(170, 221, 204); // #abc
+$rgba-same-1: rgba(255, 255, 255, .5);
+$rgba-same-2: rgba(170, 221, 204, .5);
+$rgba-diff-1: rgba(255, 255, 255, 1);
+$rgba-diff-2: rgba(170, 221, 204, .5);
+
+.test-operation {
+	// 基础运算
+	width: ($four - $One) * 10px % $four + $onePX; // 3px
+	// height: $onePX * $onePX; // error 1px*px invalid
+	margin-top: $one + $onePX; // 2px
+	margin-left: $one + $px; // 1px
+	margin-right: $one + $strPX; // "1px" 不报错 但样式无效 invalid
+	margin-bottom: $one * 1px; // 1px
+
+	// 逻辑运算
+	font-size: $four > $one;
+	display: not $one; // false
+
+  // 颜色运算
+	color: $color-2 - $color-3; // #552233;
+	background: $rgb-1 - $rgb-2; // #552233;
+	border-top-color: $rgba-same-1 - $rgba-same-2; 
+	// rgba(85, 34, 51, 0.5); warn 未来版本可能舍弃有透明值的预算， 推荐使用颜色函数
+	border-bottom-color: $rgba-diff-1 - $rgba-diff-2;
+	// error Alpha channels must be equal: white - rgba(170, 221, 204, 0.5))
+}
+
+/* ---------- 嵌套 ---------- */
+.test-nest {
+	.one {
+		width: 1px;
+		border: {
+			style: solid;
+			width: 1px;
+			color: #ccc;
+		}
+	}
+	.two {
+		width: 2px;
+		.three {
+			height: 22px;
+		}
+		div & {
+			height: 33px;
+    }
+    ::before {
+      content: ""
+    }
+		&::after {
+			content: "";
+		}
+	}
+	// 第一个弟弟 且为 .sibling
+	+ .sibling {
+		margin: 1px;
+	}
+	// 同级 .same元素。
+	~ .same{
+		margin: 2px;
+	}
+	// 子选择器
+	> .child {
+		margin: 3px;
+	}
+}
+
+/* ---------- 继承 ---------- */
+.one {
+	background-color: red;
+}
+.one .one-child {
+  margin: 1px;
+}
+
+.two {
+	background-color: #fff
+}
+
+// 占位符， 不会生成css选择器
+%three {
+	padding: 10px;
+}
+
+.test-extend {
+  @extend .one, .two;
+  color: #fff;
+}
+
+.test-holder {
+	@extend %three;
+}
+
+.error {
+  border: 1px #f00;
+  background-color: #fdd;
+}
+
+@media print {
+  .seriousError {
+//     You may not @extend an outer selector from within @media.
+// You may only @extend selectors within the same directive.
+    @extend .error;
+    border-width: 3px;
+  }
+}
+// 正确的写法是
+@media print {
+  .error {
+    border: 1px #f00;
+    background-color: #fdd;
+  }
+  .seriousError {
+    @extend .error;
+    border-width: 3px;
+  }
+}
+
+.a {
+  @extend .b !optional; // 效果就是 即使.b不存在 也不会报错
+}
+
+/* ---------- 混合 ---------- */
+// 申明 $size: 11px表示默认值
+@mixin mix($size: 11px,$bg: #fff) {
+	width: $size;
+	text-align: center;
+	background: $bg;
+	@content; // 传入片段占位符
+}
+
+// 使用
+.argument-content {
+	@include mix(20px) {
+    // 传入片段
+    height: 100px;
+    line-height: 100px;
+	}
+}
+// 关键词参数
+.argument-key {
+	@include mix($bg: #ccc, $size: 10x)
+}
+// 参数变量
+@mixin argument-var($b...) {
+	border: $b
+}
+
+$li: 1px solid red;
+.test-argument-var {
+ @include argument-var($li) 
+}
+
+/* ---------- 指令 ---------- */
+// 函数指令
+@function fun($num) {
+	// debug 调试指令 会在控制台打出
+	@debug "i am " $num;
+	@if $num % 3 == 0 {
+		@return $num / 3;
+	} 
+	@else if $num % 5 == 0 {
+		@return $num / 5 - 2;
+	}
+	@else if $num % 7 == 0 {
+		@return $num - 4;
+	}
+	@else {
+		@return if($num > 10, $num % 5, $num);
+	}
+	
+}
+// 使用
+$test: 6, 10, 28, 8, 16;
+@each $var in $test {
+	.test-fun-#{$var} {
+		width: fun($var);
+	}
+}
+
+/* 循环指令 @for */
+@for $var from 1 to 3 {
+	// warn
+	@warn $var;
+	.for-to-#{$var} {
+		line-height: $var * 1px;
+	}
+}
+
+@for $var from 1 through 3 {
+	// 报错指令
+	// @error $var; 报错
+	.for-through-#{$var} {
+		line-height: $var * 1px;
+	}
+}
+
+
+// 循环指令 @each
+$arr1: 1px 2px 3px;
+$map1: (top: 1px, bottom: 2px);
+
+@each $var in $arr1 {
+	.each-#{$var} {
+		width: $var;
+	}
+}
+
+@each $k, $v in $map1 {
+	.map-#{$k} {
+		margin: $v;
+	}
+}
+
+// 循环指令 @while 指令重复输出格式直到表达式返回结果为 false
+$i: 3;
+@while $i > 0 {
+  .item-#{$i} { 
+		width: 2em * $i; 
+	}
+  $i: $i - 1;
+}
+
+// at-root 根
+
+.test-root {
+	.one {
+		.two {
+			color: red;
+		}
+		@at-root .three {
+			color: #fff;
+		}
+	}
+}
+
+// at-root 在媒体查询中的表现
+@media screen and (max-width: 300px) {
+	body {
+		background-color:lightblue;
+	}
+	.test-root-media {
+		.one {
+			color: red;
+		}
+		@at-root .two {
+			color: #fff;
+		}
+	}
+}
+
+// at-root without
+@media screen and (max-width: 300px) {
+	body {
+		background-color:lightblue;
+	}
+	.test-root-media {
+		.one {
+			color: red;
+		}
+		@at-root (without: media) {
+			.test-root-media-without-media {
+				color: #fff;
+			}
+		}
+	}
+}
+
+// at-root without
+@media screen and (max-width: 400px) {
+	body {
+		background-color:lightblue;
+	}
+	.test-root-media-2 {
+		.one {
+			color: red;
+		}
+		@at-root (without: all) {
+			.test-root-media-without-all {
+				color: #fff;
+			}
+		}
+	}
+}
