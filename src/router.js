@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
+import vueDeepLearning from "./route/vue-learning/index"
 
 Vue.use(Router);
 
 const routes = [
+  ...vueDeepLearning,
   {
     path: "/home",
     name: "home",

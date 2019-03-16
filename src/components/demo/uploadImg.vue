@@ -123,14 +123,14 @@
     width: 240px;
   }
 
-  #img1 {
-    @include Img_Uploader(100px, 100px, 1)
-  }
+  // #img1 {
+  //   @include Img_Uploader(100px, 100px, 1)
+  // }
 
-  #img2 {
-    margin-top: 20px;
-    @include Img_Uploader(100px, 100px, 1)
-  }
+  // #img2 {
+  //   margin-top: 20px;
+  //   @include Img_Uploader(100px, 100px, 1)
+  // }
 
   .test-box {
     margin-top: 20px;
