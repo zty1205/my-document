@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	 
+class Person {
+  constructor(name = "", age = 0) {
+    this._name = name;
+    this._age = age;
+  }
+
+  setName(name) {
+    this.name = name;
+    return this;
+  }
+  setAge(age) {
+    this._age = age;
+    return this;
+  }
+
+  set _name(name) {
+    this.name = name;
+  } 
+  set _age(age) {
+  	this.age = isNaN(age) ? 0 : Number(age) 
+  }
+
+  get _name() { // console.log()会 显示浅色的_name，表示可以得到该值，但是属性中其实并没有该属性
+  	return this.name
+  }
+}
+
+class Man extends Person {
+	constructor(name, age, sex = "m", birthday) {
+		super(name, age) // 必须先写super
+		this.sex = sex
+		this.birthday = birthday || new Date()
+	} 
+
+}
+
+// 可以用 _属性 做中间变量 配置set 做类型检测
+// 也可以在构造函数中 做检测（直接或是function）
+
+let person = new Person()
+person.setName("zty").setAge(18)
+console.log("person = ", person)
+console.log("person = ", {...person})
+
+let man = new Man("zz", 18)
+man.setAge(20)
+console.log("man = ", man)
+
+</script>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		body {
+			font-size: 20px;
+		}
+		.box {
+			border:1px solid red;
+			margin: 10px 10px;
+			height: 100px;
+			text-align: center;
+		}
+		.unit-em {
+			width: 10em;
+		}
+		.unit-rem {
+			width: 1rem;
+		}
+		.unit-vw {
+			width: 10vw;
+		}
+		.unit-vh {
+			width: 10vh;
+		}
+		/* div:last-child {
+			background: red;
+		} */
+		div:nth-child(6) {
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="box unit-em">10em</div>
+	<div class="box unit-rem">1rem</div>
+	<div class="box unit-vw">10vw</div>
+	<div class="box unit-vh">10vh</div>
+	<span class="box" style="width: 100px;display: block;"></span>
+	<div class="box" style="width: 100px;"></span>
+</body>
+<script>
+
+	function setRem(page, multiple = 100) {
+		let vWidth = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth
+		document.querySelector("html").style.fontSize = vWidth / page * multiple + "px"
+	}
+
+	setRem(750, 100)
+	// 如果给的设计稿的宽是750px 而我的屏幕尺寸是800px  html的 font-size就会被设置成106.667px (100b倍)
+	// 那么我写的width 为 7.5rem 就可以沾满屏幕的宽
+
+	let html_fs = document.querySelector("html").style.fontSize
+	console.log("html font size = ", html_fs)
+
+	let inner_width = window.innerWidth
+	let body_client_width = document.body.clientWidth
+	let doc_client_width = document.documentElement.clientWidth
+
+	console.log("window.innerWidth = ", window.innerWidth)
+	console.log("body_client_width = ", body_client_width)
+	console.log("doc_client_width = ", doc_client_width)
+
+	
+	
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>电脑背景图生成</title>
+	<style>
+        html {
+            height: 100%;
+        }
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .h-half {
+            height: 50%;
+            width: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .w-half {
+            height: 100%;
+             width: 50%; 
+            /* display: inline-block; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .half {
+            height: 50%;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 25%;
+            left: 25%;
+        }
+        .status-emergent {
+            background: linear-gradient(to left, red , #fff);
+        }
+        .status-software {
+            background: linear-gradient(to left, #fff , green);
+        }
+        .status-doing {
+            background: linear-gradient(to left, blue , #fff);
+        }
+        .status-future {
+            background: linear-gradient(to left, #fff , grey);
+        }
+        .title {
+            color: #ccc;
+            font-size: 28px;
+            text-shadow: #9C27B0 3px 3px 3px;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- 4 -->
+ 	<div class="h-half">
+        <div class="w-half status-software">
+            <div class="title">软件Area</div>
+        </div>
+        <div class="w-half status-emergent">
+            <div class="title">very捉急</div>
+        </div>
+        
+    </div>
+    <div class="h-half">
+        <div class="w-half status-future">
+            <div class="title">待处理</div>
+        </div>
+        <div class="w-half status-doing">
+            <div class="title">进行中</div>
+        </div>
+    </div>
+
+    <!-- 加中 -->
+    <!-- <div class="half" style="background: grey;">中</div> -->
+</body>
+<script>
+    html2canvas(document.body).then(function(canvas) {
+        document.body.appendChild(canvas);
+    });
+    let canvasDom = document.querySelector("canvas")
+    canvasDom.style.height = "100%"
+    canvasDom.style.weight = "100%"
+</script>
+</html>
