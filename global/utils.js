@@ -18,9 +18,29 @@ export function isPrimitive (v) {
   )
 }
 
-export function isObject (obj) {
+export function isObject (obj) { // 数组的话 Array.isArray()
   return obj !== null && typeof obj === 'object'
 }
+
+// JSON.stringify(obj) === "{}"
+// for in 循环
+// Object.getOwnPropertyNames() === 空数组                                 )
+export function isObjectEmpty(obj) {
+  if (!isObject(obj)) {
+    console.warn(`The argument ${obj} is not a Object`)
+    return false
+  }
+  return Object.keys(obj).length !== 0 || Object.values(obj).length !== 0
+}
+
+export function isArrayEmpty(obj) {
+  if (!Array.isArray(arr)) {
+    console.warn(`The argument ${obj} is not a Object`)
+    return false
+  }
+  return Object.keys(obj).length !== 0 || Object.values(obj).length !== 0
+}
+
 
 /**
  * Get the raw type string of a value, e.g., [object Object].
@@ -63,7 +83,7 @@ export function isPromise (val) {
 /**
  * Convert a value to a string that is actually rendered.
  */
-export function toString (val: any): string {
+export function toString (val) {
   return val == null
     ? ''
     : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString)
@@ -174,7 +194,7 @@ export function looseEqual (a, b) {
  * found in the array (if value is a plain object, the array must
  * contain an object of the same shape), or -1 if it is not present.
  */
-export function looseIndexOf (arr: Array<mixed>, val: mixed): number {
+export function looseIndexOf (arr, val) {
   for (let i = 0; i < arr.length; i++) {
     if (looseEqual(arr[i], val)) return i
   }
