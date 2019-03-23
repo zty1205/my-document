@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>canvas</title>
+</head>
+<style>
+	.canvas-box {
+		display: inline-block;
+		min-width: 240px;
+		margin-left: 10px;
+		margin-right: 10px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		box-sizing: border-box;
+		padding: 10px 16px;
+		text-align: center;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.canvas-info {
+		margin-bottom: 10px;
+	}
+	.canvas {
+		border: 1px solid rgb(31, 173, 78);
+	}
+</style>
+<body>
+	<div class="canvas-box">
+		<div class="canvas-info">绘制线条</div>
+		<canvas id="canvas-line" class="canvas" width="200" height="100">
+				你的浏览器不支持 canvas，请升级你的浏览器。
+		</canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制直线图形</div>
+		<canvas id="canvas-line-img" class="canvas" width="200" height="100">		</canvas>
+	</div>
+	
+	<div class="canvas-box">
+		<div class="canvas-info">绘制矩形</div>
+		<canvas id="canvas-rect" class="canvas" width="200" height="100"></canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制矩形-内部清空</div>
+		<canvas id="canvas-rect-white" class="canvas" width="200" height="100"></canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制文本</div>
+		<canvas id="canvas-text" class="canvas" width="200" height="100"></canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制圆形</div>
+		<canvas id="canvas-arc" class="canvas" width="200" height="100"></canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制圆弧</div>
+		<canvas id="canvas-arc-multi" class="canvas" width="200" height="100"></canvas>
+	</div>
+	
+	<div class="canvas-box">
+		<div class="canvas-info">绘制线性渐变</div>
+		<canvas id="canvas-lgd" class="canvas" width="200" height="100"></canvas>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">绘制径向渐变</div>
+		<canvas id="canvas-rgd" class="canvas" width="200" height="100"></canvas>
+	</div>
+	
+	<div class="canvas-box">
+		<div class="canvas-info">图片</div>
+		<img id="can-img" src="./90_90.jpg" style="height: 100px"></img>
+	</div>
+
+	<div class="canvas-box">
+		<div class="canvas-info">将图片移至画布</div>
+		<canvas id="canvas-img" class="canvas" width="200" height="100"></canvas>
+	</div>	
+
+</body>
+<script>
+	// canvas 的坐标是从画布的左上角开始的 向右→为 x正半轴 向下↓为Y轴正半轴
+	// <canvas> 只有两个可选的属性 width、heigth 属性，而没有 src、alt 属性。
+	// 如果不给 <canvas> 设置 widht、height 属性时，则默认 width为300、height 为 150，单位都是 px。
+	// 也可以使用 css 属性来设置宽高，但是如宽高属性和初始比例不一致，他会出现扭曲。
+	// 所以，建议永远不要使用 css 属性来设置 <canvas> 的宽高。
+
+	// 线条
+	var c = document.getElementById("canvas-line");
+	var ctx = c.getContext("2d");
+	ctx.moveTo(10, 10); // 开始坐标
+	ctx.lineTo(190, 90); // 结束坐标
+	ctx.stroke(); // 绘制已定义的路径
+
+	// 直线图形
+	var c = document.getElementById("canvas-line-img");
+	var ctx = c.getContext("2d");
+	ctx.beginPath();
+	ctx.moveTo(20, 20); // 起点
+	ctx.lineTo(20, 80);
+	ctx.lineTo(100, 20);
+	ctx.closePath(); //虽然我们只绘制了两条线段，但是closePath 会close Path，仍然是一个3角形
+	ctx.stroke(); //描边。stroke 不会自动 closePath()
+
+	// 填充的矩形
+	var c = document.getElementById("canvas-rect");
+	var ctx = c.getContext("2d");
+	ctx.fillStyle = "#FF0000"; // 填充的颜色
+	ctx.fillRect(50, 25, 100, 50); // fillRect(x,y,width,height)
+
+	// 内部清除的矩形
+	var c = document.getElementById("canvas-rect-white");
+	var ctx1 = c.getContext("2d");
+	ctx1.fillStyle = "#FF0000"; // 填充的颜色
+	ctx1.fillRect(50, 25, 100, 50); // fillRect(x,y,width,height)
+	ctx1.clearRect(75, 37.5, 50, 25)
+
+	// 文本
+	var c = document.getElementById("canvas-text");
+	var ctx = c.getContext("2d");
+	ctx.font="30px Arial"; // 大小30px 字体Arial 
+	ctx.fillText("Hello World",10,40); // fillText(text,x,y) - 在 canvas 上绘制实心的文本
+	ctx.strokeText("Hello World",40,80); // strokeText(text,x,y) - 在 canvas 上绘制空心的文本
+
+	// 圆形
+	var c = document.getElementById("canvas-arc");
+	var ctx = c.getContext("2d");
+	ctx.beginPath(); // 起始一条路径，或重置当前路径
+	ctx.arc(95, 50, 40, 0, 2*Math.PI); // arc(x,y,r,start,stop) start stop 表示圆周角的 0 - 360度
+	ctx.stroke(); // 绘制已定义的路径
+
+	// 圆弧
+	var c = document.getElementById("canvas-arc-multi");
+	var ctx2 = c.getContext("2d");
+	ctx2.beginPath();
+	ctx2.arc(10, 20, 40, 0, Math.PI / 2, false);
+	ctx2.stroke();
+	ctx2.beginPath();
+	ctx2.arc(70, 60, 40, 0, -Math.PI / 2, true);
+	ctx2.closePath();
+	ctx2.stroke();
+	ctx2.beginPath();
+	ctx2.arc(150, 50, 40, -Math.PI / 2, Math.PI / 2, false);
+	ctx2.fill();
+	ctx2.beginPath();
+
+	// 线性渐变
+	var c = document.getElementById("canvas-lgd");
+	var ctx = c.getContext("2d");
+	var grd = ctx.createLinearGradient(0,0,200,0); // createLinearGradient(x,y,x1,y1) - 创建线条渐变
+	grd.addColorStop(0,"red"); // 0 表示开始颜色
+	grd.addColorStop(1,"white"); // 1 表示结束颜色
+	ctx.fillStyle =grd; 
+	ctx.fillRect(10,10,150,80); // 填充渐变
+
+	// 径向渐变
+	var c = document.getElementById("canvas-rgd");
+	var ctx3 = c.getContext("2d");
+	var grd3 = ctx3.createRadialGradient(20,40,10,40,20,40);// createRadialGradient(x,y,r,x1,y1,r1) - 创建一个径向/圆渐变
+	grd3.addColorStop(0,"red"); // 0 表示开始颜色
+	grd3.addColorStop(1,"white"); // 1 表示结束颜色
+	ctx3.fillStyle = grd3;
+	ctx3.fillRect(10,10,150,80); // 填充渐变
+
+	var c = document.getElementById("canvas-img");
+	var ctx = c.getContext("2d");
+	var img = document.getElementById("can-img");
+	img.onload = function(){
+		ctx.drawImage(img,55,5); // drawImage(image,x,y)
+	}
+
+</script>
+</html>
