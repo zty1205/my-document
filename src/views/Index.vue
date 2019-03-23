@@ -15,6 +15,7 @@
 import { routes } from "@/router"
 
 export default {
+  name: "Index",
   data() {
     return {
       name: '',

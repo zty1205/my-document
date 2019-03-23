@@ -1,19 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
 import vueDeepLearning from "./route/vue-learning/index"
 
 Vue.use(Router);
 
 const routes = [
   ...vueDeepLearning,
-  {
-    path: "/home",
-    name: "home",
-    // 同步加载组件
-    component: Home,
-    title: "Home"
-  },
   {
     path: "/demo",
     name: "demo",
@@ -37,19 +29,13 @@ const routes = [
     title: '自定义日期多选'
   },
   {
-    path: "/menu",
-    name: "menu",
+    path: '',
     // route level code-splitting
-    // this generates a separate chunk (menu.[hash].js) for this route
+    // this generates a separate chunk (Index.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // 异步加载组件
-    component: () => import(/* webpackChunkName: "menu" */ "./views/menu.vue"),
+    component: () => import(/* webpackChunkName: "Index" */ "./views/Index.vue"),
     title: "首页"
-  },
-  {
-    path: '',
-    component: () => import('@/components/menu/menu'),
-    title: "菜单"
   }
 ]
 
