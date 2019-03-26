@@ -1,14 +1,16 @@
 <template>
   <div class="page">
-    <h1>keep-alive</h1>
+    <h1>transition-group</h1>
     <div class="body">
       <div class="block">
         <div class="inline-block-demo">
           <el-button @click="add">Add</el-button>
           <el-button @click="remove">Remove</el-button>
+          <el-button @click="swap">swap</el-button>
           <transition-group name="list-complete" tag="p">
             <span v-for="item in items" :key="item" class="list-complete-item">{{ item }}</span>
           </transition-group>
+          <div><span v-for="item in items" :key="item" class="list-complete-item">{{ item }}</span></div>
         </div>
       </div>
     </div>
@@ -47,6 +49,12 @@ export default {
     },
     remove() {
       this.items.splice(this.randomIndex(), 1)
+    },
+    swap() {
+      let index1 = 2
+      let index2 = 4
+      let arr = this.items
+      arr[index1] = arr.splice(index2, 1, arr[index1])[0]
     }
   }
 }
@@ -80,6 +88,7 @@ export default {
       padding: 12px 16px;
       margin: 10px 10px 4px 10px;
       min-width: 180px;
+      min-height: 80px;
     }
   }
 </style>
