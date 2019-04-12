@@ -126,7 +126,9 @@ export default {
       border-radius: 16px;
       padding: 12px 16px;
       margin: 10px 10px 4px 10px;
-      min-width: 180px;
+      min-width: 240px;
+      min-height: 200px;
+      vertical-align: middle;
     }
   }
 </style>
