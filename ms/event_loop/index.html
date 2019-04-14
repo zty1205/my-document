@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event-loop</title>
+  <style>
+    .inline {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 60px;
+      max-width: 30%;
+    }
+    .btn {
+      display: block;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #dcdfe6;
+      color: #606266;
+      -webkit-appearance: none;
+      text-align: center;
+      box-sizing: border-box;
+      outline: none;
+      margin: 0;
+      transition: .1s;
+      font-weight: 500;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+    }
+    .text-area {
+      display: block;
+      resize: vertical;
+      padding: 5px 15px;
+      line-height: 1.5;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: inherit;
+      color: #606266;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      margin-bottom: 20px;
+    }
+    .answer {
+      display: none;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      padding: 10px 10px;
+      transition: all .5s 
+    }
+    .none {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="inline">
+      <pre>
+          console.log(1) 
+    
+          setTimeout(() => { 
+              console.log(2)
+              setTimeout(() => console.log(3))
+              new Promise(resolve => { 
+                console.log(4) 
+                resolve() 
+              }).then(() => { 
+                console.log(5) 
+              }) 
+          }) 
+        
+          console.log(6)
+        
+          new Promise(resolve => { 
+            console.log(7) 
+            resolve() 
+          }).then(() => { 
+            console.log(8) 
+          }) 
+        
+          setTimeout(() => { 
+            console.log(9) 
+            new Promise(resolve => {
+              setTimeout(() => console.log(10))
+              console.log(11) 
+              resolve() 
+            }).then(() => { 
+              console.log(12) 
+            }) 
+          })
+      </pre>
+  </div>
+  
+  <div class="inline">
+      <textarea class="text-area"></textarea>
+      <button class="btn" id="answer-btn" onclick="show()"><span>查看答案</span></button>
+      <div class="answer">
+        <p>macro-task1: 1 6 7 8</p>
+        <p>macro-task2: 2 4 5</p>
+        <p>macro-task3: 9 11 12</p>
+        <p>macro-task4: 3</p>
+        <p>macro-task5: 10</p>
+        <button class="btn" onclick="info()"><span>查看解析</span></button>
+      </div>
+  </div>
+
+  <div id="info" class="inline none">
+    <div class="part">
+      <p class="part-title"></p>
+      <p class="info-title">关键步骤如下：</p>
+      <ol>
+        <li>执行 queue 最前面的 macro-task</li>
+        <li>检查该 macro-task 是否存在 micro-task，如果有则执行</li>
+        <li>执行下一行 macro-task。 不断重复上面的过程，直至 queue 为空</li>
+        <li>执行render</li>
+      </ol>
+      
+      <p class="info-title">macro-task 和 micro-task</p>
+      <ul>
+        <li>macro-task(宏任务)主要包含：setTimeout、setInterval、setImmediate、I/O、UI交互事件、（整体代码script）</li>
+        <li>micro-task(微任务)主要包含：Promise、process.nextTick、Mutation Observer(监听DOM树变化)</li>
+        <li>macro-task 和 micro-task 都有自己的</li>
+      </ul>
+    </div>
+
+    <div class="part">
+      <p>在一个 macro-task 中</p>
+      <ul>
+        <li>同步任务进入主线程</li>
+        <li>异步任务进入Event Table并注册函数</li>
+        <li>当指定的事情完成时，Event Table 会将这个函数移入 Event Queue</li>
+        <li>主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行</li>
+        <li>上述过程会不断重复，也就是常说的Event Loop(事件循环)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+<script>
+
+  var isShow = false
+
+  function show() {
+    isShow = !isShow
+    document.querySelector(".answer").style.display = isShow ? 'block' : "none"
+  }
+
+  var isInfo = false
+
+  function info() {
+    isInfo = !isInfo
+    document.querySelector("#info").style.display = isInfo ? 'inline-block' : "none"
+  }
+
+  function testOne() {
+    console.log(1) 
+
+    setTimeout(() => { 
+        console.log(2)
+        setTimeout(() => console.log(3))
+        new Promise(resolve => { 
+          console.log(4) 
+          resolve() 
+        }).then(() => { 
+          console.log(5) 
+        }) 
+    }) 
+
+    console.log(6)
+
+    new Promise(resolve => { 
+      console.log(7) 
+      resolve() 
+    }).then(() => { 
+      console.log(8) 
+    }) 
+
+    setTimeout(() => { 
+      console.log(9) 
+      new Promise(resolve => {
+        setTimeout(() => console.log(10))
+        console.log(11) 
+        resolve() 
+      }).then(() => { 
+        console.log(12) 
+      }) 
+    })
+
+    // 1 6 7 8
+    // 2 4 5
+    // 9 11 12
+    // 3
+    // 10
+  }
+
+  testOne()
+
+</script>
+</html>
