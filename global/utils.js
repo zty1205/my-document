@@ -100,6 +100,14 @@ export function toNumber (val) {
   return isNaN(n) ? val : n
 }
 
+export function getRandomInteger(min, max) {
+  if(isDef(min) && isUndef(max)) {
+    min = 0;
+    max = min;
+  }
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
