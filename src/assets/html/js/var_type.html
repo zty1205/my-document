@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+
+</body>
+<script>
+
+    const BASIC_TYPE = 1
+    const BASIC_PACKAGE_TYPE = 2
+    const COMPLEX_TYPE = 3
+    const ES6_TYPE = 4
+
+    const list = [
+        {
+            name: 'undefined',
+            value: undefined,
+            rawType: 'Undefined',
+            typeOf: 'undefined',
+            type: BASIC_TYPE,
+            typeDesc: '基本数据类型'
+        },
+        {
+            name: 'null',
+            value: null,
+            rawType: 'Null',
+            typeOf: 'object',
+            type: BASIC_TYPE,
+            typeDesc: '基本数据类型'
+        },
+        {
+            name: 'string',
+            value: 'zty',
+            rawType: 'String',
+            typeOf: 'string',
+            type: BASIC_TYPE,
+            typeDesc: '基本数据类型'
+        },
+        {
+            name: 'number',
+            value: 123,
+            rawType: 'Number',
+            typeOf: 'number',
+            type: BASIC_TYPE,
+            typeDesc: '基本数据类型'
+        },
+        {
+            name: 'boolean',
+            value: false,
+            rawType: 'Boolean',
+            typeOf: 'boolean',
+            type: BASIC_TYPE,
+            typeDesc: '基本数据类型'
+        },
+        {
+            name: 'new String',
+            value: new String(11),
+            rawType: 'String',
+            typeOf: 'object',
+            type: BASIC_PACKAGE_TYPE,
+            typeDesc: '基本包装类型'
+        },
+        {
+            name: 'new Number',
+            value: new Number(11),
+            rawType: 'Number',
+            typeOf: 'object',
+            type: BASIC_PACKAGE_TYPE,
+            typeDesc: '基本包装类型'
+        },
+        {
+            name: 'new Boolean',
+            value: new Boolean(11),
+            rawType: 'Boolean',
+            typeOf: 'object',
+            type: BASIC_PACKAGE_TYPE,
+            typeDesc: '基本包装类型'
+        },
+        {
+            name: 'object',
+            value: {foo: 1},
+            rawType: 'Object',
+            typeOf: 'object',
+            type: COMPLEX_TYPE,
+            typeDesc: '复杂类型'
+        },
+        {
+            name: 'array',
+            value: [1, 2, 3],
+            rawType: 'Array',
+            typeOf: 'object',
+            type: COMPLEX_TYPE,
+            typeDesc: '复杂类型'
+        },
+        {
+            name: 'function',
+            value: () => {console.log('Im a function')},
+            rawType: 'Function',
+            typeOf: 'function',
+            type: COMPLEX_TYPE,
+            typeDesc: '复杂类型'
+        },
+        {
+            name: 'symbol',
+            value: Symbol(),
+            rawType: 'Symbol()',
+            typeOf: 'symbol',
+            type: ES6_TYPE,
+            typeDesc: 'ES6新增类型'
+        },
+        {
+            name: 'Set',
+            value: new Set(),
+            rawType: 'Set',
+            typeOf: 'object',
+            type: ES6_TYPE,
+            typeDesc: 'ES6新增类型'
+        },
+        {
+            name: 'Map',
+            value: new Map(),
+            rawType: 'Map',
+            typeOf: 'object',
+            type: ES6_TYPE,
+            typeDesc: 'ES6新增类型'
+        }
+    ]
+
+    // list[10].value()
+    
+    for (let item of list) {
+        let n = item.name
+        let val = item.value
+        // console.log(`%c ${n} = `, 'color: green', val)
+        // console.log(`%c in typeof ${n} = `, 'color: blue', typeof val)
+        // val 的原型 _proto_
+        // val instanceof object
+        // console.log(`in instanceof ${n} = `, val instanceof)
+        // console.log(`in constructor ${n} = `, val.constructor)
+        console.log(`%c in toString ${n} = `, 'color: red',Object.prototype.toString.call(val)) // 完美解决
+    }
+
+    // console.log()
+    // typeof
+    // instanceof
+    // constructor
+    // Object.prototype.toString.call()
+
+
+    let u = undefined
+    let n = null
+    
+</script>
+</html>
