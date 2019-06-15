@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>原型模式</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div><a href="https://cloud.tencent.com/developer/article/1356687" target="_blank">参考一： 腾讯云-JS 原型模式</a></div>
+</body>
+<script>
+// 原型模式(Prototype pattern)，用原型实例指向创建对象的类，使用于创建新的对象的类的共享原型的属性与方法
+// 优点：共享原型的属性与方法，节约内存
+
+  // 1: Object.create()  2: 原型继承  3: 使用class
+  let proto = {
+    AAA: 123,
+    BBB: '原型属性'
+  }
+  let p = Object.create(proto) // 浅拷贝
+  window.p1 = p
+  console.log("p = ", p)
+  console.log("p _proto_ = ", p.__proto__)
+  console.log("proto = ", proto)
+  p.AAA = '实例属性'
+  console.log("----------------")
+  console.log("p = ", p)
+  console.log("p _proto_", p.__proto__)
+  p.__proto__.AAA = 456
+  console.log("----------------")
+  console.log("p _proto_ = ", p.__proto__)
+  console.log("proto = ", proto)
+
+  function _inherits(Child, Parent) {
+        var F = function () {};
+        F.prototype = Parent.prototype;
+        Child.prototype = new F();
+        Child.prototype.constructor = Child;
+    }
+
+    function Student(props) {
+        this.name = props.name || 'Unnamed';
+    }
+
+    Student.prototype.hello = function () {
+        alert('Hello, ' + this.name + '!');
+    }
+
+    function PrimaryStudent(props) {
+        Student.call(this, props);
+        this.grade = props.grade || 1;
+    }
+
+    // 实现原型继承链:
+    _inherits(PrimaryStudent, Student);
+</script>
+</html>

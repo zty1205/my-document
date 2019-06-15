@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>遍历树</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let g = {
+        name: 'G',
+        leftChild: null,
+        rightChild: null,
+    }
+    let e = {
+        name: 'E',
+        leftChild: g,
+        rightChild: null, 
+    }
+    let d = {
+        name: 'D',
+        leftChild: null,
+        rightChild: null,
+    }
+    let b =  {
+        name: 'B',
+        leftChild: d,
+        rightChild: e,
+    }
+    let f = {
+        name: 'F',
+        leftChild: null,
+        rightChild: null,
+    }
+    let c = {
+        name: 'C',
+        leftChild: null,
+        rightChild: f,
+    }
+    let a = {
+        name: 'A',
+        leftChild: b,
+        rightChild: c,
+    }
+    console.log("a = ", a)
+
+    // 深度遍历
+    function deepTravel(root) {
+        if (root) {
+            console.log(root.name)
+            deepTravel(root.leftChild)
+            deepTravel(root.rightChild)
+        }
+    }
+
+    // deepTravel(a)
+
+    // 广度遍历
+    function breadTravel(root) {
+        let queue = []
+        queue.push(root)
+        while (queue.length) {
+            let node = queue.shift()
+            console.log(node.name)
+            node.leftChild && queue.push(node.leftChild)
+            node.rightChild && queue.push(node.rightChild)
+        }
+    }
+
+    breadTravel(a)
+</script>
+<script>
+    function isDef(val) {
+        return val !== null && val !== undefined && val !== ''
+    }
+    function isUndef(val) {
+        return val === null || val === undefined || val === ''
+    }
+    var _toString = Object.prototype.toString
+
+    function isPlainObject (obj) {
+        return _toString.call(obj) === '[object Object]'
+    }
+    function toRawType (value) {
+        return _toString.call(value).slice(8, -1)
+    }
+
+    function extend (to, _from) {
+        for (var key in _from) {
+            to[key] = _from[key]
+        }
+        return to
+    }
+
+    var baseOptions = {
+        idName: 'id',
+        pIdName: 'pId',
+        rootId: 0,
+        leftChildName: 'leftChild',
+        rightChildName: 'rightChild'
+    }
+
+    function binaryTree(treeOrArray, options) {
+        if (isUndef(treeOrArray) || isPlainObject(treeOrArray)) {
+            return treeOrArray
+        }
+        options && extend(options, baseOptions)
+        
+        
+        
+    }
+</script>
+</html>

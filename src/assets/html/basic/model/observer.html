@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>观察者模式</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+
+</body>
+<script>
+  function Subject(name) {
+    this.name = name;
+    this.list = []
+  }
+  Subject.prototype = {
+    register: function(obj) {
+      this.list.push(obj)
+    },
+    unRegister: function(obj) {
+      if(this.list.length) {
+        let idx = this.list.findIndex(x => x === obj)
+        idx !== -1 && this.list.splice(idx, 1)
+      }
+    },
+    notify: function() {
+      if(this.list.length) {
+        for (let i = 0; i < this.list.length; i++) {
+          this.list[i].update && this.list[i].update({date: 'zty'})
+        }
+      }
+    }
+  }
+
+  function Observer(id) {
+    this.id = id;
+    this.update = function(msg) {
+      console.log(`id = ${this.id} received msg: `, msg)
+    }
+  }
+
+  let o1 = new Observer(1)
+  let o2 = new Observer(2)
+  let sub = new Subject("test")
+  sub.register(o1)
+  sub.register(o2)
+  console.log("sub = ", sub)
+  sub.notify()
+
+  console.log('---------------')
+
+  let o3 = new Observer(3)
+  sub.register(o3)
+  sub.notify()
+
+  console.log('---------------')
+
+  sub.unRegister(o1)
+  sub.notify()
+
+
+  // error
+  function observer(oldVal, newVal) {
+    console.log("oldVal = ", oldVal)
+    console.log("newVal = ", newVal)
+  }
+  let obj = {name: 'zz'}
+  Object.defineProperty(obj, 'name', {
+    enumerable: true,
+    configurable: true,
+    get: function() {
+      console.log("this = ", this)
+      // return this.name // `my name is ${name}`
+    },
+    set: function(val) {
+      observer(this.name, val)
+      this.name = val
+    }
+  })
+  // console.log('name = ', obj.name)
+  // obj.name = '111'
+</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>块级格式上下文</title>
+</head>
+<style>
+    html body {
+        margin: 0;
+        padding: 0;
+    }
+    .clear-float {
+        height: 0;
+        clear: both;
+        content: '';
+        display: block;
+    }
+
+    .over-hide {
+        overflow: hidden;
+    }
+
+    .container {
+        width: 300px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        margin: 10px 10px;
+    }
+ 
+    .aside {
+        width: 100px;
+        height: 50px;
+        float: left;
+        background: #f66;
+    }
+ 
+    .main {
+        height: 100px;
+        background: #ccc;
+    }
+
+    .parent {
+        border: 5px solid #ccc;
+    }
+    .child {
+        border: 5px solid red;
+        width: 100px;
+        height: 50px;
+        float: left;
+    }
+</style>
+<body>
+    <!-- 特性1 -->
+    <div class="container">
+        <div>123</div>
+        <div>456</div>
+    </div>
+
+    <!-- 特性3 于border接触 -->
+    <div class="container">
+        <div class="aside">BFC</div>
+        <div class="main">no - BFC</div>
+    </div>
+
+    <!-- margin 坍塌 特性2-->
+    <div class="over-hide">
+        <div class="container">
+            解决margin坍塌
+        </div>
+    </div>
+
+    <!-- 特性4 -->
+    <div class="container">
+        <div class="aside">BFC</div>
+        <div class="main over-hide">overflow hidden - BFC</div>
+    </div>
+
+    <!-- 特性5 -->
+    <div class="container parent">
+        <div class="child">float</div>
+        <div class="child">float</div>
+    </div>
+    
+    <div class="container parent over-hide">
+        <div class="child">float</div>
+        <div class="child">float</div>
+        over-hide
+    </div>
+
+    <!-- 以上都体现特性6 - 独立 -->
+
+    <div>
+        <ol>
+            <li>内部的Box会在垂直方向，一个接一个地放置</li>
+            <li>Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠</li>
+            <li>每个元素的margin box的左边， 与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此</li>
+            <li>BFC的区域不会与float box重叠</li>
+            <li>计算BFC的高度时，浮动元素也参与计算</li>
+            <li>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此</li>
+        </ol>
+    </div>
+</body>
+</html>

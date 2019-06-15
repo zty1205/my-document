@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="x5-orientation" content="portrait">
+    <title>Document</title>
+    <link rel="stylesheet" href="">
+    <style>
+        .container{
+            position: relative;
+        }
+        .box {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            background: red;
+            transition: left 2s;
+            /* display: none; */
+        }
+        .btns {
+            position: fixed;
+            bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+
+        </div>
+    </div>
+    <div class="btns">
+        <button id="btn1">点击left</button>
+        <button id="btn2">点击top</button>
+        <button id="btn3">复位</button>
+    </div>
+</body>
+<script>
+    // 不可见元素不会触发 动画效果 因为是没必要的
+    // transition 监听某个属性的变化 一旦发生变化 则执行动画
+    let dom_box = document.querySelector('.box')
+    document.querySelector('#btn1').addEventListener('click', function() {
+        dom_box.style.left = '120px';
+    })
+    document.querySelector('#btn2').addEventListener('click', function() {
+        dom_box.style.top = '120px';
+    })
+    document.querySelector('#btn3').addEventListener('click', function() {
+        dom_box.style.top = '20px';
+        dom_box.style.left = '20px';
+    })
+    dom_box.addEventListener('transitionstart', function() {
+        console.log('box transition start')
+    })
+    dom_box.addEventListener('transitionend', function() {
+        console.log('box transition end')
+    })
+</script>
+</html>

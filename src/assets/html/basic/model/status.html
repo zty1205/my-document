@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+
+</body>
+<script>
+  // 预先定义了 所有状态
+  class SuperMarry {
+    constructor() {
+      this._currentState = []
+      this.states = {
+        jump() {console.log('跳跃!')},
+        move() {console.log('移动!')},
+        shoot() {console.log('射击!')},
+        squat() {console.log('蹲下!')}
+      }
+    }
+  
+    change(arr) {  // 更改当前动作
+      this._currentState = arr
+      return this
+    }
+    go() {
+      console.log('触发动作')
+      this._currentState.forEach(T => this.states[T] && this.states[T]())
+      return this
+    }
+  }
+
+  new SuperMarry()
+    .change(['jump', 'shoot'])
+    .go()                    // 触发动作  跳跃!  射击!
+    .go()                    // 触发动作  跳跃!  射击!
+    .change(['squat'])
+    .go()                    // 触发动作  蹲下!
+
+
+// 更适合接口的编程  都实现say方法
+  class TrafficLight {
+    constructor(light) {
+      this.light = light
+    }
+    toggle(light) {
+      this.light = light
+      light.say && light.say()
+      return this
+    }
+  }
+
+  class RedLight {
+    toggleLight(trafficLight) {
+      trafficLight.setLight(this)
+    }
+    say() {
+      console.log("现在是红灯")
+    }
+  }
+  RedLight.prototype.toggleLight = function(trafficLight) {
+    trafficLight.setLight(this)
+  }
+
+  class GreenLight {
+    say() {
+      console.log("现在是绿灯")
+    }
+  }
+  GreenLight.prototype.toggleLight = function(trafficLight) {
+    trafficLight.setLight(this)
+  }
+
+  class YellowRight {
+    say() {
+      console.log("现在是黄灯")
+    }
+  }
+
+
+  let tl = new TrafficLight()
+  let red = new RedLight()
+  let green = new GreenLight()
+  let yellow = new YellowRight()
+  console.clear()
+  tl.toggle(red).toggle(green).toggle(yellow)
+  // red.toggleLight(tl)
+  // console.log("tl = ", tl)
+</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>内联格式化上下文</title>
+    <style>
+        html body {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            margin: 20px 10px;
+        }
+        .text {
+            color: #fff;
+            background: green;
+            margin: 4px;
+            padding: 4px;
+            border: 2px solid red;
+        }
+        .float-left {
+            float: left;
+        }
+        .vertical-middle {
+            vertical-align: middle;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .width-200 {
+            width: 200px;
+        }
+        .width-80 {
+            width: 80px;
+        }
+        .height-100 {
+            height: 100px;
+        }
+        .height-40 {
+            height: 40px;
+        }
+        .height-20 {
+            height: 20px;
+        }
+        .inline-block {
+            display: inline-block;
+        }
+        .border-red {
+            box-sizing: border-box;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 特性一 -->
+    <div class="container">
+        <span class="text">123</span>
+        <span class="text">456</span>
+    </div>
+
+    <div class="container">
+        <span class="text">123</span>
+        <span class="text vertical-middle">456-v-middle</span>
+    </div>
+
+    <div class="container">
+        <span class="text">123</span>
+        <span class="text">456</span>
+        <span class="text float-left">789-float</span>
+    </div>
+
+    <div class="container">
+        <span class="text">123</span>
+        <span class="text vertical-middle">456-v-middle</span>
+        <span class="text float-left">789-float</span>
+    </div>
+
+    <!-- 怎么切割? 不符合特性8啊 -->
+    <div class="container width-80">
+        <span class="width-200">1234</span>
+    </div>
+
+    <div class="container text-center">
+        <span>t-center</span>
+    </div>
+
+    <!-- 好像是 使用 2 -->
+    <div class="container">
+        <span class="height-100 inline-block vertical-middle border-red">1234</span>
+        <span class="height-20">20</span>
+    </div>
+
+    <button id="heightBtn"></button>
+    <div>
+        <h2>IFC布局规则</h2>
+        <ul>
+            <li>子元素水平方向横向排列，并且垂直方向起点为元素顶部</li>
+            <li>子元素只会计算横向样式空间，【padding、border、margin】，垂直方向样式空间不会被计算，【padding、border、margin】</li>
+            <li>在垂直方向上，子元素会以不同形式来对齐（vertical-align）</li>
+            <li>能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框（line box）。行框的宽度是由包含块（containing box）和与其中的浮动来决定</li>
+            <li>IFC中的“line box”一般左右边贴紧其包含块，但float元素会优先排列</li>
+            <li>IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同</li>
+            <li>当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定</li>
+            <li>当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 boxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>使用</h2>
+        <ul>
+            <li>水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。</li>
+            <li>垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。</li>
+        </ul>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+<script>
+    var addHeight = true;
+    var H = 50;
+    $(function() {
+        $("#heightBtn").text(`高度${H}px`)
+        $("#heightBtn").click(function() {
+            var h = addHeight ? `${H}px` : ''
+            var text = addHeight ? '高度auto' : `高度${H}px`
+            $('.container').css('height', h)
+            $("#heightBtn").text(text)
+            addHeight = !addHeight
+        })
+    })
+</script>
+</html>

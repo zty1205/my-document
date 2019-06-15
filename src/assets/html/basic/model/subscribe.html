@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>发布-订阅模式</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+
+</body>
+<script>
+  function PubSub() {
+    this.handlers = {}
+  }
+  PubSub.prototype = {
+    on: function(type, handle) {
+      !this.handlers[type] && (this.handlers[type] = [])
+      this.handlers[type].push(handle)
+    },
+    emit: function() {
+      let type = Array.prototype.shift.call(arguments) // 第一个参数
+      if (this.handlers[type]) {
+        for (let i = 0; i < this.handlers[type].length; i++) {
+          let hd = this.handlers[type][i]
+          hd.apply(this, arguments)
+        }
+      } else {
+        return false
+      }
+    },
+    off: function(type, handle) {
+      if (this.handlers[type]) {
+        let idx = this.handlers[type].findIndex(h => h === handle)
+        if (idx !== -1) {
+          this.handlers[type].splice(idx, 1)
+        }
+      }
+    }
+  }
+  // 对应的事件 添加响应函数
+  let p1 = new PubSub()
+  p1.on('h1', function(name) {
+    console.log("--- p1 on h1 ---")
+    console.log("on h1 name = ", name)
+  })
+  p1.on('h1', function(name) {
+    console.log("--- h1 的 第二个订阅者 ---")
+    // console.log("on h1 name = ", name)
+  })
+  p1.emit('h1', 'zty')
+  console.log("p1 = ", p1)
+</script>
+</html>

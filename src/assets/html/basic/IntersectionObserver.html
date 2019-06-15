@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+    body {
+      height: 1200px;
+    }
+    .ioOb {
+      width: 100px;
+      height: 100px;
+      background: red;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="ob1" class="ioOb"></div>
+
+  <div id="ob2" class="ioOb"></div>
+</body>
+<script>
+  // ios12.0 之后才支持 安卓5.0 兼容性不怎么的
+
+  var io = new IntersectionObserver(
+    entries => { // 触发该事件的元素的数据，异步API，低优先级
+      console.log(entries);
+    },
+    {}
+  );
+
+  io.observe(document.querySelector("#ob1"));
+  io.observe(document.querySelector("#ob2"));
+</script>
+</html>

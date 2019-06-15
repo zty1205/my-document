@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+
+</body>
+<script>
+  function Universe() {
+    var instance
+    Universe = function Universe() {
+        return instance
+    }
+    Universe.prototype = this // 保留原型属性
+    instance = new Universe()
+    instance.constructor = Universe // 重置构造函数指针
+    instance.start_time = 0 // 一些属性
+    instance.big = 'yeah'
+    return instance
+  }
+  Universe.prototype.nothing = true
+  var uni1 = new Universe()
+  window.unit = uni1
+  // Universe.prototype.enthing = true
+  // var uni2 = new Universe()
+  // console.log(uni1 === uni2) // true
+
+  // uni1.nothing & uni2.nothing & uni1.enthing & uni2.enthing // true
+  // uni1.constructor.name // "Universe"
+  // uni1.constructor === Universe // true
+  // uni1.big    // "yeah"
+  // uni2.big    // "yeah"
+</script>
+</html>

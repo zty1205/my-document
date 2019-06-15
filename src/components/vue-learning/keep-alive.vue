@@ -5,8 +5,9 @@
       <div class="block">
         <div class="inline-block-demo">
         <p>不使用keep-alive组件</p>
-              <component :is="noKeep"></component>
+              <component :is="noKeep" ref="comp1"></component>
           <el-button type="primary" @click="toggle('noKeep')">切换</el-button>
+          <el-button type="primary" @click="showRef">showRef</el-button>
         </div>
 
         <div class="inline-block-demo">
@@ -130,6 +131,9 @@ export default {
   methods: {
     toggle(key) {
       this[key] = this[key] === 'compA' ? 'compB' : 'compA'
+    },
+    showRef() {
+      console.log("ref = ", this.$refs.comp1) // ref还有效果
     }
   }
 }

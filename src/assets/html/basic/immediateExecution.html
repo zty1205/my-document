@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <strong>立即执行函数前面的分号不写，执行报错</strong>
+</body>
+<script>
+
+    let o = {
+        a: 1,
+        b: 2
+    };
+
+    // 普通
+    (function() {
+        console.log("in () fun")
+    })();
+
+    // 写法一
+    (function test(obj) {
+        console.log("in () fun")
+        obj.a = 2
+        console.log('obj = ', obj)
+    })(o);
+
+    // 写法二
+    (function test(obj) {
+        console.log("in () fun")
+        obj.a = 2
+        console.log('obj = ', obj)
+    }(o));
+
+</script>
+</html>

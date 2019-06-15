@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // https://segmentfault.com/a/1190000009478377?utm_source=tag-newest
+    // https://www.jianshu.com/p/b4f0425b22a1
+
+    function MyPromiseSimple(fn) {
+        var value = null,
+            callbacks = [];  //callbacks为数组，因为可能同时有很多个回调
+
+        this.then = function (onFulfilled) {
+            callbacks.push(onFulfilled);
+            return this;
+        };
+
+        function resolve(value) {
+            setTimeout(function() {
+                callbacks.forEach(function (callback) {
+                    callback(value);
+                });
+            }, 0)
+        }
+
+        fn(resolve);
+    }
+
+    let mps = new MyPromiseSimple(function(reslove) {
+        setTimeout(() => {
+            reslove("in MyPromiseSimple resolve")
+        }, 100)
+    })
+
+    console.log("mps = ", mps)
+    mps.then(res => {
+        console.log("mp then res = ", res)
+    })
+
+    /* 
+
+    function PFun(num) {
+        return new Promise((reslove, reject) => {
+            setTimeout(() => {
+                if (num > 5) {
+                    reslove(`reslove num = ${num}`)
+                } else {
+                    reject(`reject num = ${num}`)
+                }
+            }, 300)
+        })
+    }
+
+    PFun(6).then(res => {
+        console.log("p6 then res: ", res)
+    }).catch(err => {
+        console.log("p6 catch err: ", err)
+    })
+    // p6 then res: reslove num = 6
+
+    PFun(4).then(res => {
+        console.log("p6 then res: ", res)
+    }).catch(err => {
+        console.log("p6 catch err: ", err)
+    })
+    // p4 catch err: reject num = 6
+
+    */
+</script>
+</html>
