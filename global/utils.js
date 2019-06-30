@@ -221,3 +221,15 @@ export function once (fn) {
     }
   }
 }
+
+// export function curry(fn, ...args) {
+//   return args.length < fn.length ? (...arguments) => curry(fn, ...args, ...arguments) : fn(...args)
+// }
+
+export function flattenDeepArray(arr, dep = Math.pow(2, 53) - 1) {
+  return arr.flat(dep);
+}
+
+export function flattenDeepArraySimple(arr) {
+  return arr.reduce((acc, val) => Array.isArray(acc) ? acc.concat(flattenDeepArraySimple(val)) : acc.concat(val), [])
+}
