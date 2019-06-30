@@ -121,6 +121,14 @@ export function toNumber(val) {
   return isNaN(n) ? val : n;
 }
 
+export function getRandomInteger(min, max) {
+  if(isDef(min) && isUndef(max)) {
+    min = 0;
+    max = min;
+  }
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
@@ -237,4 +245,16 @@ export function once(fn) {
       fn.apply(this, arguments);
     }
   };
+}
+
+// export function curry(fn, ...args) {
+//   return args.length < fn.length ? (...arguments) => curry(fn, ...args, ...arguments) : fn(...args)
+// }
+
+export function flattenDeepArray(arr, dep = Math.pow(2, 53) - 1) {
+  return arr.flat(dep);
+}
+
+export function flattenDeepArraySimple(arr) {
+  return arr.reduce((acc, val) => Array.isArray(acc) ? acc.concat(flattenDeepArraySimple(val)) : acc.concat(val), [])
 }
