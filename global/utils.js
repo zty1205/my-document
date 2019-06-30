@@ -1,25 +1,25 @@
+export const emptyObject = Object.freeze({});
 
-export const emptyObject = Object.freeze({})
-
-export function isUndef (v) {
-  return v === undefined || v === null
+export function isUndef(v) {
+  return v === undefined || v === null;
 }
 
-export function isDef (v) {
-  return v !== undefined && v !== null
+export function isDef(v) {
+  return v !== undefined && v !== null;
 }
 
-export function isPrimitive (v) {
+export function isPrimitive(v) {
   return (
-    typeof v === 'string' ||
-    typeof v === 'number' ||
-    typeof v === 'symbol' ||
-    typeof v === 'boolean'
-  )
+    typeof v === "string" ||
+    typeof v === "number" ||
+    typeof v === "symbol" ||
+    typeof v === "boolean"
+  );
 }
 
-export function isObject (obj) { // 数组的话 Array.isArray()
-  return obj !== null && typeof obj === 'object'
+export function isObject(obj) {
+  // 数组的话 Array.isArray()
+  return obj !== null && typeof obj === "object";
 }
 
 // JSON.stringify(obj) === "{}"
@@ -27,28 +27,49 @@ export function isObject (obj) { // 数组的话 Array.isArray()
 // Object.getOwnPropertyNames() === 空数组                                 )
 export function isObjectEmpty(obj) {
   if (!isObject(obj)) {
-    console.warn(`The argument ${obj} is not a Object`)
-    return false
+    console.warn(`The argument ${obj} is not a Object`);
+    return false;
   }
-  return Object.keys(obj).length !== 0 || Object.values(obj).length !== 0
+  return Object.keys(obj).length !== 0 || Object.values(obj).length !== 0;
 }
 
-export function isArrayEmpty(obj) {
-  if (!Array.isArray(arr)) {
-    console.warn(`The argument ${obj} is not a Object`)
-    return false
+export function deepClone(obj, hash = new WeakMap()) {
+  if (obj instanceof RegExp) {
+    return new RegExp(obj);
   }
-  return Object.keys(obj).length !== 0 || Object.values(obj).length !== 0
+  if (obj instanceof Date) {
+    return new Date(obj);
+  }
+  if (obj === "null" || typeof obj !== "object") {
+    return obj;
+  }
+  if (hash.has(obj)) {
+    return hash.get(obj);
+  }
+  let o = new obj.constructor();
+  hash.set(obj, o);
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      o[key] = deepClone(obj[key], hash);
+    }
+  }
+  return o;
 }
 
+export function jsonCopy(obj) {
+  if (isDef(obj)) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+  return obj;
+}
 
 /**
  * Get the raw type string of a value, e.g., [object Object].
  */
-const _toString = Object.prototype.toString
+const _toString = Object.prototype.toString;
 
-export function toRawType (value) {
-  return _toString.call(value).slice(8, -1)
+export function toRawType(value) {
+  return _toString.call(value).slice(8, -1);
 }
 
 /**
@@ -56,73 +77,71 @@ export function toRawType (value) {
  * for plain JavaScript objects.
  * {} 或 new Object 创建的
  */
-export function isPlainObject (obj) {
-  return _toString.call(obj) === '[object Object]'
+export function isPlainObject(obj) {
+  return _toString.call(obj) === "[object Object]";
 }
 
-export function isRegExp (v) {
-  return _toString.call(v) === '[object RegExp]'
+export function isRegExp(v) {
+  return _toString.call(v) === "[object RegExp]";
 }
 
 /**
  * Check if val is a valid array index.
  */
-export function isValidArrayIndex (val) {
-  const n = parseFloat(String(val))
-  return n >= 0 && Math.floor(n) === n && isFinite(val)
+export function isValidArrayIndex(val) {
+  const n = parseFloat(String(val));
+  return n >= 0 && Math.floor(n) === n && isFinite(val);
 }
 
-export function isPromise (val) {
+export function isPromise(val) {
   return (
     isDef(val) &&
-    typeof val.then === 'function' &&
-    typeof val.catch === 'function'
-  )
+    typeof val.then === "function" &&
+    typeof val.catch === "function"
+  );
 }
 
 /**
  * Convert a value to a string that is actually rendered.
  */
-export function toString (val) {
+export function toString(val) {
   return val == null
-    ? ''
+    ? ""
     : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString)
-      ? JSON.stringify(val, null, 2)
-      : String(val)
+    ? JSON.stringify(val, null, 2)
+    : String(val);
 }
 
 /**
  * Convert an input value to a number for persistence.
  * If the conversion fails, return original string.
  */
-export function toNumber (val) {
-  const n = parseFloat(val)
-  return isNaN(n) ? val : n
+export function toNumber(val) {
+  const n = parseFloat(val);
+  return isNaN(n) ? val : n;
 }
 
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
  */
-export function makeMap (str, expectsLowerCase) {
-  const map = Object.create(null)
-  const list = str.split(',')
+export function makeMap(str, expectsLowerCase) {
+  const map = Object.create(null);
+  const list = str.split(",");
   for (let i = 0; i < list.length; i++) {
-    map[list[i]] = true
+    map[list[i]] = true;
   }
-  return expectsLowerCase
-    ? val => map[val.toLowerCase()]
-    : val => map[val]
+  return expectsLowerCase ? val => map[val.toLowerCase()] : val => map[val];
 }
 
 /**
  * Remove an item from an array.
  */
-export function remove (arr, item) {
+export function remove(arr, item) {
   if (arr.length) {
-    const index = arr.indexOf(item)
+    const index = arr.indexOf(item);
     if (index > -1) {
-      return arr.splice(index, 1)
+      return arr.splice(index, 1);
     }
   }
 }
@@ -130,62 +149,68 @@ export function remove (arr, item) {
 /**
  * Mix properties into target object.
  */
-export function extend (to, _from) {
+export function extend(to, _from) {
   for (const key in _from) {
-    to[key] = _from[key]
+    to[key] = _from[key];
   }
-  return to
+  return to;
 }
 
 /**
  * Merge an Array of Objects into a single Object.
  */
-export function toObject (arr) {
-  const res = {}
+export function toObject(arr) {
+  const res = {};
   for (let i = 0; i < arr.length; i++) {
     if (arr[i]) {
-      extend(res, arr[i])
+      extend(res, arr[i]);
     }
   }
-  return res
+  return res;
 }
 
 /**
  * Check if two values are loosely equal - that is,
  * if they are plain objects, do they have the same shape?
  */
-export function looseEqual (a, b) {
-  if (a === b) return true
-  const isObjectA = isObject(a)
-  const isObjectB = isObject(b)
+export function looseEqual(a, b) {
+  if (a === b) return true;
+  const isObjectA = isObject(a);
+  const isObjectB = isObject(b);
   if (isObjectA && isObjectB) {
     try {
-      const isArrayA = Array.isArray(a)
-      const isArrayB = Array.isArray(b)
+      const isArrayA = Array.isArray(a);
+      const isArrayB = Array.isArray(b);
       if (isArrayA && isArrayB) {
-        return a.length === b.length && a.every((e, i) => {
-          return looseEqual(e, b[i])
-        })
+        return (
+          a.length === b.length &&
+          a.every((e, i) => {
+            return looseEqual(e, b[i]);
+          })
+        );
       } else if (a instanceof Date && b instanceof Date) {
-        return a.getTime() === b.getTime()
+        return a.getTime() === b.getTime();
       } else if (!isArrayA && !isArrayB) {
-        const keysA = Object.keys(a)
-        const keysB = Object.keys(b)
-        return keysA.length === keysB.length && keysA.every(key => {
-          return looseEqual(a[key], b[key])
-        })
+        const keysA = Object.keys(a);
+        const keysB = Object.keys(b);
+        return (
+          keysA.length === keysB.length &&
+          keysA.every(key => {
+            return looseEqual(a[key], b[key]);
+          })
+        );
       } else {
         /* istanbul ignore next */
-        return false
+        return false;
       }
     } catch (e) {
       /* istanbul ignore next */
-      return false
+      return false;
     }
   } else if (!isObjectA && !isObjectB) {
-    return String(a) === String(b)
+    return String(a) === String(b);
   } else {
-    return false
+    return false;
   }
 }
 
@@ -194,22 +219,22 @@ export function looseEqual (a, b) {
  * found in the array (if value is a plain object, the array must
  * contain an object of the same shape), or -1 if it is not present.
  */
-export function looseIndexOf (arr, val) {
+export function looseIndexOf(arr, val) {
   for (let i = 0; i < arr.length; i++) {
-    if (looseEqual(arr[i], val)) return i
+    if (looseEqual(arr[i], val)) return i;
   }
-  return -1
+  return -1;
 }
 
 /**
  * Ensure a function is called only once.
  */
-export function once (fn) {
-  let called = false
-  return function () {
+export function once(fn) {
+  let called = false;
+  return function() {
     if (!called) {
-      called = true
-      fn.apply(this, arguments)
+      called = true;
+      fn.apply(this, arguments);
     }
-  }
+  };
 }

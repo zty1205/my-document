@@ -14,6 +14,15 @@ const routes = [
     // 异步加载组件
     component: () => import(/* webpackChunkName: "Index" */ "./views/Index.vue"),
     title: "首页"
+  },
+  {
+    path: '/temp',
+    // route level code-splitting
+    // this generates a separate chunk (Index.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    // 异步加载组件
+    component: () => import(/* webpackChunkName: "Index" */ "./views/Temp.vue"),
+    title: "临时"
   }
 ]
 
