@@ -122,11 +122,11 @@ export function toNumber(val) {
 }
 
 export function getRandomInteger(min, max) {
-  if(isDef(min) && isUndef(max)) {
+  if (isDef(min) && isUndef(max)) {
     min = 0;
     max = min;
   }
-  return Math.floor(Math.random() * (max - min) ) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 /**
@@ -256,5 +256,89 @@ export function flattenDeepArray(arr, dep = Math.pow(2, 53) - 1) {
 }
 
 export function flattenDeepArraySimple(arr) {
-  return arr.reduce((acc, val) => Array.isArray(acc) ? acc.concat(flattenDeepArraySimple(val)) : acc.concat(val), [])
+  return arr.reduce(
+    (acc, val) =>
+      Array.isArray(acc)
+        ? acc.concat(flattenDeepArraySimple(val))
+        : acc.concat(val),
+    []
+  );
+}
+
+// 防抖函数
+export function debounce(func, wait, immediate = true) {
+  let timeout, result;
+  const later = (context, args) =>
+    setTimeout(() => {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }, wait);
+  let debounced = function(...params) {
+    if (!timeout) {
+      timeout = later(this, params);
+      if (immediate) {
+        // 立即执行
+        result = func.apply(this, params);
+      }
+    } else {
+      clearTimeout(timeout);
+      // 函数在每个等待时延的结束被调用
+      timeout = later(this, params);
+    }
+    return result;
+  };
+  // 提供外部清空定时器的方法
+  debounced.cancel = function() {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+  return debounced;
+}
+
+export function throttle(func, wait, options = {}) {
+  let timeout, context, args, result;
+  let previous = 0;
+  const later = () => {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) {
+      context = args = null;
+    }
+  };
+
+  let throttled = function(...params) {
+    let now = Date.now();
+    if (!previous && options.leading === false) {
+      previous = now;
+    }
+    // remain 为距离下次执行 func 的时间
+    let remain = wait - (now - previous);
+    context = this;
+    args = params;
+    // remain > wait 表示客户端时间被调整过
+    if (remain <= 0 || remain > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(this, params);
+      if (!timeout) {
+        context = args = null;
+      }
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remain);
+    }
+    return result;
+  };
+
+  throttled.cancel = function() {
+    clearTimeout(timeout);
+    previous = 0;
+    timeout = context = args = null;
+  };
 }
