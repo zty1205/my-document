@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div>
+    <p>给定一个整数数组 nums 和一个目标值 target，</p>
+    <p>请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+    <p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素</p>
+  </div>
+  <div>
+    <p>给定 nums = [1, 2, 3, 5, 7, 11, 14, 15], target = 9</p>
+    <p>因为 nums[1] + nums[4] = 2 + 7 = 9</p>
+    <p>所以返回 [1, 4]</p>
+  </div>
+</body>
+<script>
+
+/**
+ * @param {number[]} nums 假定数据元素不重复 但4.5+4.5=9不符合题意
+ * @param {number} target
+ * @return {number[]}
+ */
+
+ // 暴力法优化：排序后过滤掉比 target大的值 在循环数组 . 将数组分成 比target / 2 大的数组larges 和 小的 数组smalls, 只需遍历两者长度小的数组
+var twoSum = function(nums, target) {
+    var filterNums = nums.sort((a, b)=> a - b).filter(x => x < target)
+    if (!filterNums || filterNums.length < 2) {
+      return []
+    } else if (filterNums.length === 2) {
+      return filterNums[0] + filterNums[1] === target ? [0, 1] : []
+    } else {
+      var smalls = filterNums.filter(x => x < target / 2)
+      var larges = filterNums.filter(x => x > target / 2)
+      if (smalls.length === 0 || larges.length === 0) {
+        return;
+      }
+      var smallIndex, largeIndex;
+      var offset = 0; // 当遍历的是larges是 offset = smalls.length
+      var forList, findList;
+      if (smalls.length <= larges) {
+        forList = smalls
+        findList = larges
+      } else {
+        forList = larges
+        findList = smalls
+        offset = smalls.length
+      }
+      for (var i = 0, len = forList.length; i < len; i++) {
+        var needFind = target - forList[i]
+        var findIndex = findList.findIndex(x => x === needFind)
+        if (findIndex != -1) {
+          return [i, findIndex + offset]
+        }
+      }
+      return []
+    }
+};
+
+var s = [1, 2, 3, 5, 7, 11, 14, 15]
+var target = 9
+console.log("res = ", twoSum(s, target))
+console.log("res = ", twoSum(s, 13))
+
+// 上面解答无效，忽略了原数组的下表， 可以将数组 换成 {value: 1, index: 0}来使用上面的方法 不过有点麻烦
+// 或是按上面的 找出了数字 在回去找index
+
+// 新
+// 1. 暴力破解
+function twoSum2(sums, target) {
+  if (!sums || sums.length < 2) {
+    return []
+  } else if (sums.length === 2) {
+    return sums[0] + sums[1] === target ? [0, 1] : []
+  } else {
+    for (var i = 0; i < sums.length; i++) {
+      if (sums[i] < target) {
+        var idx = sums.findIndex(x => x === target - sums[i])
+        if (idx !== -1 && idx !== i) {
+          return [i, idx]
+        }
+      }
+    }
+  }
+  return []
+}
+
+var s = [1, 2, 3, 5, 7, 11, 14, 15]
+var target = 9
+console.log("res = ", twoSum2(s, target))
+console.log("res = ", twoSum2(s, 13))
+
+// 没有考虑相等 且本身0 + 0
+function twoSum2(sums, target) {
+  if (!sums || sums.length < 2) {
+    return []
+  } else if (sums.length === 2) {
+    return sums[0] + sums[1] === target ? [0, 1] : []
+  } else {
+    for (var i = 0; i < sums.length; i++) {
+      if (sums[i] < target) {
+        var idx = sums.findIndex(x => x === target - sums[i])
+        if (idx !== -1 && idx !== i && sums[i] !== sums[idx]) {
+          return [i, idx]
+        }
+      }
+    }
+  }
+  return []
+}
+// 没有考虑相等
+function twoSum2(sums, target) {
+  if (!sums || sums.length < 2) {
+    return []
+  } else if (sums.length === 2) {
+    return sums[0] + sums[1] === target ? [0, 1] : []
+  } else {
+    for (var i = 0; i < sums.length; i++) {
+      if (sums[i] < target) {
+        var idx = sums.findIndex(x => x === target - sums[i])
+        if (idx !== -1 && idx !== i && sums[i] !== sums[idx]) {
+          return [i, idx]
+        }
+      }
+    }
+  }
+  return []
+}
+// 
+function findIndex(nums, i, delNum) {
+  for (var idx = i + 1; idx < nums.length; idx ++) {
+    if (nums[idx] === delNum) {
+      return idx
+    }
+  }
+  return -1
+}
+function twoSum3(nums, target) {
+  if (!nums || nums.length < 2) {
+    return []
+  } else if (nums.length === 2) {
+    return nums[0] + nums[1] === target ? [0, 1] : []
+  } else {
+    for (var i = 0; i < nums.length; i++) {
+      if (nums[i] <= target) {
+        var idx = findIndex(nums, i, target - nums[i])
+        if (idx !== -1) {
+          return [i, idx]
+        }
+      }
+    }
+  }
+  return []
+}
+
+function twoSum4(nums, target) {
+  if (!nums || nums.length < 2) {
+    return []
+  } else if (nums.length === 2) {
+    return nums[0] + nums[1] === target ? [0, 1] : []
+  } else {
+    for (var i = 0; i < nums.length; i++) {
+      var idx = findIndex(nums, i, target - nums[i])
+      if (idx !== -1) {
+        return [i, idx]
+      }
+    }
+  }
+  return []
+}
+
+var ss = [3,2,3]
+var t = 6
+console.log("res3 = ", twoSum3(ss, t))
+console.log("res3 = ", twoSum3([0,4,3,0], 0))
+
+// 没有考虑负数
+var sss = [-1,-2,-3,-4,-5]
+var tt = -8
+console.log("res4 = ", twoSum4(sss, tt))
+
+/*
+执行用时 :136 ms
+内存消耗 :34.8 MB
+*/
+
+// findIndex 可以使用  arr.indexOf(searchElement[, fromIndex = 0]) 代替
+// 时间复杂度 O(n^2) 空间O(1)
+</script>
+
+<script>
+
+// 方法二 两边hash法 时间O(n) 空间O(n)
+console.clear()
+var isDef = function(val) {
+  return val !== undefined && val !== null && val !== ''
+}
+var twoSum = function(nums, target) {
+  var map = {}
+  // hash映射 使得查找更加方便
+  for (var i = 0; i < nums.length; i++) {
+    map[nums[i]] = i;
+  }
+  window.map = map
+  console.log("map = ", map)
+  debugger
+  for (var i = 0; i < nums.length; i++) {
+    var delNum = target - nums[i];
+    console.log("delNum = ", delNum)
+    console.log("map[delNum] = ", map[delNum])
+    console.log("result = ", map[delNum] !== i)
+    if (isDef(map[delNum]) && map[delNum] !== i) {
+      return [i, map[delNum]]
+    }
+  }
+  return false
+}
+/*
+执行用时 :68 ms
+内存消耗 :36.2 MB
+*/
+
+console.log("res = ", twoSum([3,2,4], 6))
+</script>
+
+<script>
+// 一遍hash法 时间O(n) 空间O(n)
+// 2 + 4 = 6 遍历到2 是查不到 但是到4就可以
+console.clear()
+var isDef = function(val) {
+  return val !== undefined && val !== null && val !== ''
+}
+var twoSum = function(nums, target) {
+  var map = {}
+  for (var i = 0; i < nums.length; i++) {
+      var delNum = target - nums[i];
+      if (isDef(map[delNum])) {
+        return [map[delNum], i]
+      }
+      map[nums[i]] = i
+  }
+  return false
+}
+
+/*
+执行用时 :80 ms
+内存消耗 :35.6 MB
+*/
+</script>
+</html>
