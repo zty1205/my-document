@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+    .ml {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p>给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。</p>
+    <p>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。</p>
+    <p>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+    <p>示例：</p>
+    <p class="ml">输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)</p>
+    <p class="ml">输出：7 -> 0 -> 8</p>
+    <p class="ml">原因：342 + 465 = 807</p>
+  </div>
+</body>
+<script>
+  // js没有链表....
+  /**
+   * Definition for singly-linked list.
+   * function ListNode(val) {
+   *     this.val = val;
+   *     this.next = null;
+   * }
+   */
+  /**
+   * @param {ListNode} l1
+   * @param {ListNode} l2
+   * @return {ListNode}
+   */
+
+  function ListNode(val) {
+    this.val = val;
+    this.next = null;
+  }
+  ListNode.prototype = {
+    length: 1,
+    addNode: function(node) {
+      this.next = node;
+      return this.next
+    },
+    addNodes: function(list) {
+      var a = this
+      for (var i = 0; i < list.length; i++) {
+        a.next = new ListNode(list[i])
+        a = a.next
+      }
+      return a
+    },
+    toNumber: function() {
+      var a = this
+      var sum = a.val
+      var i = 1
+      while(a.next) {
+        a = a.next
+        sum = sum + a.val * Math.pow(10, i++)
+      }
+      return sum;
+    }
+  }
+  window.ln = new ListNode("node1")
+  ln.addNode(new ListNode('node2')).addNode(new ListNode('node3')).addNode(new ListNode('node4'))
+  // console.log("ln = ", ln)
+
+  window.ln2 = new ListNode("n1")
+  ln2.addNodes(['n2', 'n3', 'n4', 'n5',])
+  // console.log("ln2 = ", ln2)
+
+  // 循环 + 进位
+  function buildListNodeByList(list) {
+    var f = list.unshift()
+    var ln = new ListNode(f)
+    ln.addNodes(list)
+    return ln;
+  }
+  function buildListNodeByNumber(num) {
+    // debugger
+    var n = num % 10;
+    var ln = new ListNode(n);
+    var a = ln
+    while(num) {
+      num = (num - n) / 10
+      n = num % 10;
+      if (n) {
+        a = a.addNode(new ListNode(n))
+      }
+    }
+    return ln
+  }
+  // console.log(buildListNodeByNumber(123456))
+
+
+  function addTwo(l1, l2, lnSum, add) {
+    if (l1 && l2) {
+      var sum = l1.val + l2.val + add;
+      var val = sum % 10
+      lnSum = lnSum.addNode(new ListNode(val))
+      add = (sum - val) / 10
+      addTwo(l1.next, l2.next, lnSum, add)
+    } else if (l1) {
+      addOne(l1, lnSum, add)
+    } else if (l2) {
+      addOne(l2, lnSum, add)
+    } else {
+      return
+    }
+  }
+
+  function addOne(l, lnSum, add) {
+    lnSum = lnSum.addNode(l.val + add)
+    while(l.next) {
+      l = l.next
+      lnSum = lnSum.addNode(l.val)
+    }
+  }
+
+  var addTwoNumbers = function(l1, l2) {
+    var add = 0; // 向上进位
+    var sum = l1.val + l2.val
+    var val = sum % 10
+    var lnSum = new ListNode(val)
+    add = (sum - val) / 10
+    addTwo(l1.next, l2.next, lnSum, add);
+    return lnSum;
+  };
+
+  var a = 342;
+  var b = 465
+  var l1 = buildListNodeByNumber(a)
+  var l2 = buildListNodeByNumber(b)
+  console.log("l1 = ", l1)
+  console.log("l2 = ", l2)
+  var res = addTwoNumbers(l1, l2)
+  console.log("res = ", res)
+  console.log(`res toNumber ${a+b} = ${res.toNumber()}`)
+
+
+</script>
+
+<script>
+// 我去 LeetCode 用 数组表示链表
+// [2,4,3]
+// [5,6,4]
+</script>
+</html>

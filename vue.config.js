@@ -1,5 +1,4 @@
 module.exports = {
-  baseUrl: "/",
   publicPath: "",
   devServer: {
     // webpack-dev-server 相关配置

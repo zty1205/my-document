@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" id="a">
+    <span id="b"></span>
+  </div>
+</body>
+<script>
+  var obj = {};
+  Object.defineProperty(obj, 'hello', {
+    get: function () {
+      console.log('get val:' + val);
+      return val;
+    },
+    set: function (newVal) {
+      val = newVal;
+      console.log('set val:' + val);
+      document.getElementById('a').value = val;
+      document.getElementById('b').innerHTML = val;
+    }
+  });
+  document.addEventListener('keyup', function (e) { //触发事件的时机，从而执行相应的操作
+    obj.hello = e.target.value;
+  });
+</script>
+
+</html>

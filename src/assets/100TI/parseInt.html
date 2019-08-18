@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>map(), parseInt()</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div>['1', '2', '3'].map(parseInt)</div>
+</body>
+<script>
+console.log('res = ', ['1', '2', '3'].map(parseInt))
+
+/*
+map(function callback(currentValue[, index[, array]])
+parseInt(string, radix) // 表示该数是以radix进制表示的数
+
+- parseInt('1', 0) //radix为0时，且string参数不以“0x”和“0”开头时，按照10为基数处理。这个时候返回1
+- parseInt('2', 1) //基数为1（1进制）表示的数中，最大值小于2，所以无法解析，返回NaN
+- parseInt('3', 2) //基数为2（2进制）表示的数中，最大值小于3，所以无法解析，返回NaN
+*/
+</script>
+</html>
