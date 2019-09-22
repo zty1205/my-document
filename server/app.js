@@ -7,6 +7,9 @@ const app = express()
 const env = process.env.NODE_ENV || 'development'
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+    extended: false
+ }));
 const templateRoutes = require('./api/template')
 
 //设置允许跨域请求

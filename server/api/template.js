@@ -74,4 +74,9 @@ router.post('/postImg', upload.single("img"), (req, res, next) => {
     // 前端可以使用FileReader显示图片或使用服务器返回的地址
     res.json(result)
 })
+
+router.post('/test', (req, res, next) => {
+    console.log("body = ", req.body)
+    console.log("query = ", req.query)
+})
 module.exports = router
