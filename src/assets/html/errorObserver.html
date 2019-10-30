@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="x5-orientation" content="portrait">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+
+  </style>
+</head>
+<body>
+  <!-- <img src="./404.jpg"/> -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log('message = ', message)
+      console.log('source = ', source)
+      console.log('lineno = ', lineno)
+      console.log('colno = ', colno)
+      console.log('error = ', error)
+    }
+    // throw new Error
+    // throw new Error("It is error!")
+  
+    // TypeError错误
+    // let a = undefined
+    // console.log('a.b = ', a.b)
+  
+    // SyntaxError try不住 可使用开发工具
+    // try {
+    //   let a = ;
+    // } catch (error){
+    //   console.log('111')
+    // }
+  
+    // 可以捕获 但信息无用
+    // let arr = ',[1, 2, 4]'
+    // console.log('parse', JSON.parse(arr))
+    // 这样可以
+    // try {
+    //   console.log('parse', JSON.parse(arr))
+    // } catch (error){
+    //   console.log('error = ', error)
+    //   throw error
+    // }
+  
+    // 异步error 可捕获
+    // setTimeout(() => {
+    //   error
+    // })
+  
+    // 资源404 第三个参数表示是事件捕获流 还是冒泡流    false表示冒泡
+    window.addEventListener('error', function(message, source, lineno, colno, error) {
+      // 只有message 有数据  = Event
+      console.log('message = ', message)
+      console.log('source = ', source)
+      console.log('lineno = ', lineno)
+      console.log('colno = ', colno)
+      console.log('error = ', error)
+    }, true)
+
+    // 由于网络请求异常不会事件冒泡，因此必须在捕获阶段将其捕捉到才行，但是这种方式虽然可以捕捉到网络请求的异常，
+    // 但是无法判断 HTTP 的状态是 404 还是其他比如 500 等等，所以还需要配合服务端日志才进行排查分析才可以。
+  
+
+    // Promise 全局异常捕获事件 unhandledrejection
+    window.addEventListener("unhandledrejection", function(e){
+      e.preventDefault()
+      console.log('unhandledrejection e = ', e);
+      console.log(e.reason);
+      return true;
+    });
+    Promise.reject('promise error123');
+
+    // 业务监控
+  
+    /*
+    
+    如果想通过onerror函数收集不同域的js错误，我们需要做两件事：
+  
+    相关的js文件上加上Access-Control-Allow-Origin:*的response header
+    引用相关的js文件时加上crossorigin属性
+    
+    */
+  </script>
+  
+</body>
+
+</html>

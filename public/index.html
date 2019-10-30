@@ -15,6 +15,15 @@
       <strong>We're sorry but my-document doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.log('message = ', message)
+        console.log('source = ', source)
+        console.log('lineno = ', lineno)
+        console.log('colno = ', colno)
+        console.log('error = ', error)
+      }
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>

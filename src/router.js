@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Router from "vue-router";
 import vueDeepLearning from "./route/vue-learning/index";
+import demo from "./route/demo";
 
 Vue.use(Router);
 
 const routes = [
   ...vueDeepLearning,
+  ...demo,
   {
     path: "",
     // route level code-splitting

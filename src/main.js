@@ -8,6 +8,12 @@ import "element-ui/lib/theme-chalk/index.css";
 import "./styles/common.scss";
 
 Vue.config.productionTip = false;
+// try ctach 主 然后function.call
+Vue.config.errorHandler = (err, vm, info) => {
+  console.log("err = ", err);
+  console.log("vm = ", vm);
+  console.log("info = ", info);
+};
 Vue.use(elementUI, {
   size: "small"
 });
