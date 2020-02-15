@@ -26,6 +26,11 @@ const routes = [
     // 异步加载组件
     component: () => import(/* webpackChunkName: "Index" */ "./views/Temp.vue"),
     title: "临时"
+  },
+  {
+    path: "/use-zty-comp",
+    component: () => import("./components/use-zty-comp.vue"),
+    title: "npm组件库"
   }
 ];
 

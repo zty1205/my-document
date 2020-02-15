@@ -6,6 +6,10 @@ import store from "./store";
 import axios from "axios";
 import "element-ui/lib/theme-chalk/index.css";
 import "./styles/common.scss";
+import "zty-comp/lib/ztyComp.css";
+import ztyComp from "zty-comp";
+console.log("zty-comp = ", ztyComp);
+Vue.use(ztyComp);
 
 Vue.config.productionTip = false;
 // try ctach 主 然后function.call
