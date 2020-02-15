@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,87 +8,233 @@
     <title>Document</title>
 </head>
 <style>
-    html, body {
+    html,
+    body {
         width: 100%;
         height: 100%;
     }
-    .box {
+
+    .el {
         width: 120px;
         height: 80px;
         text-align: center;
         margin: 10px 10px;
         background: red;
+        touch-action: none;
     }
-    #drag-box {
+
+    #drag-el {
         position: fixed;
         right: 100px;
         bottom: 200px;
     }
-
 </style>
+<script src="https://cdn.bootcss.com/eruda/1.5.7/eruda.min.js"></script>
+<script>
+    eruda.init()
+</script>
 <body>
-    <div id="drag-box" class="box" draggable="true">
+    <!-- <div id="drag-el" class="el" draggable="true">
         可拖动
     </div>
-    <div id="drag-2" class="box">
+    <div id="drag-2" class="el">
         不可拖动
     </div>
-    <button id="btn">点击</button>
+    <button id="btn">点击</button> -->
+    H5
+    <div id="div2" class="el">div2</div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="//testlib.qbb6.com/wclt/js/utils/prod/H5Utils.js"></script>
 <script>
-    let dragBox = document.querySelector("#drag-box")
-    let body = document.body
+    const CTX_PROD = "https://stlib.qbb6.com/"
+const nameMap = {
+  "https://testlib.qbb6.com/": '测',
+  "https://stlib.qbb6.com/preview/": '预'
+}
+function showEnvText(ctx) {
+  window.addEventListener('load', function () {
+    var script = document.createElement('script');
+    script.src = "https://cdn.bootcss.com/eruda/1.5.7/eruda.min.js";
+    document.body.appendChild(script);
+    script.onload = function () { eruda.init() }
+    var el = document.createElement('div')
+    el.id = "env"
+    el.innerText = nameMap[ctx]
+    el.draggable = "true"
+    el.style.cssText =
+        "width: 40px;height: 40px;position: absolute;top: 18px;right: 2px; transform: translate3d(-50%, 0, 0); background: #d4362b; color: #fff; font-size: 20px; line-height: 40px; text-align: center; border-radius: 10px; z-index: 99999;"
+    document.body.append(el)
+  })
+}
+let ctx = H5Utils.getUrlContext()
+if (ctx && ctx != CTX_PROD) {
+  showEnvText(ctx)
+}
+    function toNumber(str, s) {
+        return Number(str.replace(s, ''))
+    }
 
-    dragBox.addEventListener('dragstart', function(e) {
-        console.log("e = ", e)
-        var dt = e.dataTransfer;
-        dt.effectAllowed = 'move';
-        dt.setData("text/plain", "你好");
+    function getPosition(dom, direction) {
+        if (dom && direction) {
+            let val = dom.style[direction]
+            return val ? toNumber(val, 'px') : 0
+        } else {
+            return 0
+        }
+    }
+    window.addEventListener('load', function () {
+        var startX;
+        var startY;
+        var startMouseX;
+        var startMouseY;
+        var endMouseX;
+        var endMouseY;
+        console.log('111')
+        el.ondragstart = function (e) {
+            console.log('drag start')
+            startX = getPosition(el, 'right')
+            startY = getPosition(el, 'top')
+            startMouseX = e.pageX
+            startMouseY = e.pageY
+            console.log('startX = ', startX)
+            console.log('startY = ', startY)
+            console.log('startMouseX = ', startMouseX)
+            console.log('startMouseY = ', startMouseY)
+            // el.style.opacity = .5
+            // return false
+        }
+        el.ondragend = function (e) {
+            console.log('drag end')
+            endMouseX = e.pageX;
+            endMouseY = e.pageY;
+            el.style.right = (startX - (endMouseX - startMouseX)) + 'px'
+            el.style.top = (startY + (endMouseY - startMouseY)) + 'px';
+            console.log('endMouseX = ', endMouseX)
+            console.log('endMouseY = ', endMouseY)
+            console.log('right = ', el.style.right)
+            console.log('top = ', el.style.top)
+            // el.style.opacity = 1
+            return false // 阻止回弹
+        }
+
+        var flag = false;
+			var cur = {
+				x: 0,
+				y: 0
+			}
+			var nx, ny, dx, dy, x, y;
+ 
+			function down() {
+				flag = true;
+				var touch;
+				if(event.touches) {
+					touch = event.touches[0];
+				} else {
+					touch = event;
+				}
+				cur.x = touch.clientX;
+				cur.y = touch.clientY;
+				dx = div2.offsetLeft;
+				dy = div2.offsetTop;
+			}
+ 
+			function move() {
+				if(flag) {
+					var touch;
+					if(event.touches) {
+						touch = event.touches[0];
+					} else {
+						touch = event;
+					}
+					nx = touch.clientX - cur.x;
+					ny = touch.clientY - cur.y;
+					x = dx + nx;
+					y = dy + ny;
+					div2.style.left = x + "px";
+					div2.style.top = y + "px";
+					//阻止页面的滑动默认事件
+					document.addEventListener("touchmove", function() {
+						event.preventDefault();
+					}, false);
+				}
+			}
+			//鼠标释放时候的函数
+			function end() {
+				flag = false;
+			}
+			var div2 = document.getElementById("div2");
+			div2.addEventListener("mousedown", function() {
+				down();
+			}, false);
+			div2.addEventListener("touchstart", function() {
+				down();
+			}, false)
+			div2.addEventListener("mousemove", function() {
+				move();
+			}, false);
+			div2.addEventListener("touchmove", function() {
+				move();
+			}, false)
+			document.body.addEventListener("mouseup", function() {
+				end();
+			}, false);
+			div2.addEventListener("touchend", function() {
+				end();
+			}, false);
     })
+    // let dragel = document.querySelector("#drag-el")
+    // let body = document.body
 
-    body.addEventListener('drop', function(e) {
-        console.log("in drop e = ", e)
-        var dt = e.dataTransfer;
-        var text = dt.getData("text/plain");
-        dt.dropEffect = 'move';
-        dest.textContent += text;
-    })
+    // dragel.addEventListener('dragstart', function(e) {
+    //     console.log("e = ", e)
+    //     var dt = e.dataTransfer;
+    //     dt.effectAllowed = 'move';
+    //     dt.setData("text/plain", "你好");
+    // })
+
+    // body.addEventListener('drop', function(e) {
+    //     console.log("in drop e = ", e)
+    //     var dt = e.dataTransfer;
+    //     var text = dt.getData("text/plain");
+    //     dt.dropEffect = 'move';
+    //     dest.textContent += text;
+    // })
 
 
-    $(function() {
-        var d = $("#drag-box")
-        $("#drag-box").on('dragstart', function(e) {
-            // console.log("dragstart")
-            console.log("e = ", e)
-            // console.log('rect = ', d[0].getBoundingClientRect())
+    // $(function() {
+    //     var d = $("#drag-el")
+    //     $("#drag-el").on('dragstart', function(e) {
+    //         // console.log("dragstart")
+    //         console.log("e = ", e)
+    //         // console.log('rect = ', d[0].getBoundingClientRect())
 
-            var dt = e.dataTransfer;
-            dt.effectAllowed = 'move';
-            dt.setData("text/plain", "你好");
-        })
-        $("#drag-box").on('drag', function() {
-            // console.log("drag")
-        })
-        $("#drag-box").on('dragend', function(e) {
-            // console.log("dragend")
-            console.log("e = ", e)
-            // console.log('rect2 = ', d[0].getBoundingClientRect())
-        })
-        $("#btn").click(function() {
-            d.css({
-                'transform': 'translate(10px, 10px)'
-            })
-        })
+    //         var dt = e.dataTransfer;
+    //         dt.effectAllowed = 'move';
+    //         dt.setData("text/plain", "你好");
+    //     })
+    //     $("#drag-el").on('drag', function() {
+    //         // console.log("drag")
+    //     })
+    //     $("#drag-el").on('dragend', function(e) {
+    //         // console.log("dragend")
+    //         console.log("e = ", e)
+    //         // console.log('rect2 = ', d[0].getBoundingClientRect())
+    //     })
+    //     $("#btn").click(function() {
+    //         d.css({
+    //             'transform': 'translate(10px, 10px)'
+    //         })
+    //     })
 
-        $("body").on('drop', function() {
-            console.log("drop")
-            var dt = e.dataTransfer;
-            var text = dt.getData("text/plain");
-            dt.dropEffect = 'copy';
-            dest.textContent += text;
-        })
-    })
-    
+    //     $("body").on('drop', function() {
+    //         console.log("drop")
+    //         var dt = e.dataTransfer;
+    //         var text = dt.getData("text/plain");
+    //         dt.dropEffect = 'copy';
+    //         dest.textContent += text;
+    //     })
+    // })
 </script>
+
 </html>

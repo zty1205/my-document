@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive :include="/life-style/">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
