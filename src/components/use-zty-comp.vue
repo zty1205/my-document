@@ -2,6 +2,8 @@
   <div>
     <p>使用组件marquee</p>
     <zty-marquee :data="list"></zty-marquee>
+    <div class="box"></div>
+    <Picture :data="tempData" :resolver="dataResolver" class="img"></Picture>
   </div>
 </template>
 
@@ -15,8 +17,13 @@ function setRem(pageSize) {
     (wWidth / pageSize) * 100 + "px";
 }
 setRem(750);
+// import Picture from "./Picture";
+// console.log("Picture =", Picture);
 export default {
   name: "use-zty-comp",
+  components: {
+    // Picture
+  },
   data() {
     return {
       list: [
@@ -26,12 +33,28 @@ export default {
         "恭喜“嘟嘟妈妈”抽中20元品尝装",
         "恭喜“小公主佩奇”抽中109元护肤油",
         "恭喜“小妮妮麻麻”抽中88元优惠券"
-      ]
+      ],
+      tempData: {
+        width: 300,
+        height: 400,
+        src: require("../assets/img/340_400.jpg")
+      }
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    dataResolver(data) {
+      data.name = "hh";
+      return data;
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.box {
+  margin: 20px auto;
+  width: 100%;
+  height: 20px;
+}
+</style>
