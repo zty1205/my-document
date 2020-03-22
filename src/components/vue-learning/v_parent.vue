@@ -6,11 +6,16 @@
     <div class="box">
       {{ aptMsg }}
     </div>
+    <div>
+      <el-button type="primary" @click="emitEventBus">eventBus emit</el-button>
+    </div>
   </div>
 </template>
 
 <script>
 import v_child from "./v_child";
+import eventBus from '../../eventBus'
+console.log('eventBus = ', eventBus)
 export default {
   name: "v_parent",
   components: { vChild: v_child },
@@ -25,6 +30,9 @@ export default {
   methods: {
     acceptMsg(msg) {
       this.aptMsg = msg;
+    },
+    emitEventBus() {
+      eventBus.$emit('trigger_event', 'msg')
     }
   }
 };
