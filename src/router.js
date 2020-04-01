@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
 import vueDeepLearning from "./route/vue-learning/index";
+import leetCode from './route/leetCode'
 import demo from "./route/demo";
 
 Vue.use(Router);
 
 const routes = [
   ...vueDeepLearning,
+  ...leetCode,
   ...demo,
   {
     path: "",
