@@ -6,6 +6,7 @@ import store from "./store";
 import axios from "axios";
 import "element-ui/lib/theme-chalk/index.css";
 import "./styles/common.scss";
+import { dynamicModuleCreator, dynamicModule } from './plugin'
 
 Vue.config.productionTip = false;
 // try ctach 主 然后function.call
@@ -19,6 +20,11 @@ Vue.use(elementUI, {
 });
 
 Vue.prototype.$http = axios;
+Vue.use(dynamicModuleCreator())
+
+// import('./store/module/simple.store.js').then(module => { // or require.ensure
+//   console.log('then module = ', module)
+// })
 
 new Vue({
   router,

@@ -1,5 +1,4 @@
 module.exports = {
-  publicPath: "",
   devServer: {
     // webpack-dev-server 相关配置
     open: true, //配置自动启动浏览器

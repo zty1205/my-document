@@ -3,6 +3,7 @@ import Router from "vue-router";
 import vueDeepLearning from "./route/vue-learning/index";
 import leetCode from './route/leetCode'
 import demo from "./route/demo";
+import test from "./route/test";
 
 Vue.use(Router);
 
@@ -10,6 +11,7 @@ const routes = [
   ...vueDeepLearning,
   ...leetCode,
   ...demo,
+  ...test,
   {
     path: "",
     // route level code-splitting

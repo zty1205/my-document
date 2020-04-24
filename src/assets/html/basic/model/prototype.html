@@ -26,19 +26,19 @@
     AAA: 123,
     BBB: '原型属性'
   }
-  let p = Object.create(proto) // 浅拷贝
-  window.p1 = p
-  console.log("p = ", p)
-  console.log("p _proto_ = ", p.__proto__)
-  console.log("proto = ", proto)
-  p.AAA = '实例属性'
-  console.log("----------------")
-  console.log("p = ", p)
-  console.log("p _proto_", p.__proto__)
-  p.__proto__.AAA = 456
-  console.log("----------------")
-  console.log("p _proto_ = ", p.__proto__)
-  console.log("proto = ", proto)
+  // let p = Object.create(proto) // 浅拷贝
+  // window.p1 = p
+  // console.log("p = ", p)
+  // console.log("p _proto_ = ", p.__proto__)
+  // console.log("proto = ", proto)
+  // p.AAA = '实例属性'
+  // console.log("----------------")
+  // console.log("p = ", p)
+  // console.log("p _proto_", p.__proto__)
+  // p.__proto__.AAA = 456
+  // console.log("----------------")
+  // console.log("p _proto_ = ", p.__proto__)
+  // console.log("proto = ", proto)
 
   function _inherits(Child, Parent) {
         var F = function () {};
@@ -62,5 +62,45 @@
 
     // 实现原型继承链:
     _inherits(PrimaryStudent, Student);
+
+</script>
+<script>
+  function Person(name) {
+    this.name = name
+  }
+  let p = new Person('zty')
+  window._p = p
+  console.log('p = ', p)
+  console.log('p _proto_ = ', p.__proto__)
+  console.log('Person prototype = ', Person.prototype)
+  console.log('p.__proto__ === Person.prototype = ', p.__proto__ === Person.prototype)
+
+
+  console.log('Function.prototype === Function.__proto__', p.__proto__ === Person.prototype)
+  
+  console.log('Object.prototype = ', Object.prototype)
+  let objP = p.__proto__.__proto__
+  console.log('objP = ', objP)
+  console.log('objP === Object.prototype = ',  objP === Object.prototype)
+
+  // Object.create instanceof isPrototypeOf
+
+  // Object.defineProperties(p, {
+  //   "name": {
+  //     get: function() {
+  //     return undefined
+  //    }
+  //   }
+  // })
+  // let p1 = Object.create(p)
+  let p1 = {}
+  Object.setPrototypeOf(p1, p)
+  window.p1 = p1
+  console.clear()
+  // console.log('p1 = ', p1)
+  p1.name = 'rename'
+
+  console.clear()
+  console.log('p1 = ', p1)
 </script>
 </html>
